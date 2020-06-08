@@ -1,0 +1,121 @@
+@font-face {
+    font-family: "Allura";
+    src: url('../fonts/Allura-Regular.otf');
+}
+
+@font-face {
+    font-family: "Josefin Regular";
+    src: url('../fonts/JosefinSans-Regular.ttf');
+}
+
+.hide {
+    display: none;
+}
+
+h1 {
+    font-family: "Allura";
+    font-size: 75px;
+    margin: 60px;
+}
+
+h2 {
+    font-family: "Allura";
+    font-size: 45px;
+}
+
+.dashboardContainer {
+    justify-content: space-around;
+}
+
+.card {
+    background-color: #f5a3;
+    margin: 5px;
+}
+
+h3 {
+    font-family: "Allura";
+    font-size: 30px;
+    font-weight: bold;
+}
+
+h4  {
+    font-family: "Josefin Bold";
+    font-size: 30px;
+    margin-left: 60px;
+}
+
+#message {
+    text-align: center;
+}
+
+body {
+    background-color: #f0f2bb;
+    color: #a6615e;
+    font-family: "Josefin Regular";
+}
+
+.close {
+    background-color: #f3a5a3;
+}
+
+.modal-content {
+    background-color: #f0f2bb;
+}
+
+#recoveryPassword {
+    background-color: #8ac4f2;
+    color: #a6615e;
+}
+
+#connect, #inscription {
+    height: auto;
+    border: 6px solid #f3a5a3;
+    border-radius: 20px;
+    box-shadow: 10px 5px 5px gray;
+    background-color: #8ac4f2;
+    padding: 30px;
+    text-align: center;
+    margin: 20px;
+}
+
+.task-header {
+    width: 35%;
+    margin: 0;
+    border-right: 1px solid #a6615e;
+    text-align: center;
+    align-self: center;
+}
+
+.task-footer {
+    width: 20%;
+    margin: 0;
+    border-left: 1px solid #a6615e;
+    text-align: center;
+    align-self: center;
+}
+
+.task {
+    background-color: #f3a5a3;
+    margin: 30px;
+    /*border: 2px solid #f3a5a3;*/
+    border-radius: 10px;
+    box-shadow: 10px 5px 5px gray;
+}
+
+button {
+    background-color: #216ba6;
+    color: #f0f2bb;
+}
+
+.title {
+    height: 30%;
+}
+#s {
+    height: 150px;
+}
+
+.nav2 {
+    display: block;
+    margin: 20px;
+    text-align: right;
+}

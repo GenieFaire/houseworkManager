@@ -1,26 +1,55 @@
 <?php
 
-
 namespace App\Entity;
 
-
-use App\App;
-
-class Category extends Table
+class Category
 {
+    private int $_idCategory;
+    private string $_categoryName;
 
-    protected static $table = 'category';
-
-//    public static function getAll()
-//    {
-//        return App::getDb()->query("
-//                    SELECT *
-//                    FROM " . self::$table
-//            , __CLASS__);
-//    }
-
-    public function getUrl()
+    /**
+     * Category constructor.
+     * @param $_idCategory
+     * @param $_categoryName
+     */
+    public function __construct($idCategory, $categoryName)
     {
-        return 'index.php?p=categories&id=' . $this->idCategory;
+        $this->setIdCategory($idCategory);
+        $this->setCategoryName($categoryName);
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdCategory() :int
+    {
+        return $this->_idCategory;
+    }
+
+    /**
+     * @param int $idCategory
+     */
+    public function setIdCategory(int $idCategory): void
+    {
+        $id = (int)$idCategory;
+        if ($id > 0) {
+            $this->_idCategory = $idCategory;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryName() :string
+    {
+        return $this->_categoryName;
+    }
+
+    /**
+     * @param string $_categoryName
+     */
+    public function setCategoryName(string $_categoryName): void
+    {
+        $this->_categoryName = $_categoryName;
     }
 }

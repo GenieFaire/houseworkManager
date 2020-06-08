@@ -1,27 +1,12 @@
 <?php
 
-use App\Database;
+ini_set('display_errors', 'on');
+error_reporting(E_ALL);
 
-require '../App/Autoload.php';
+require '..\App\Autoload.php';
 App\Autoload::register();
 
-if (isset($_GET['p'])) {
-    $p = $_GET['p'];
-} else {
-    $p = 'home';
-}
+use App\Controller\Router;
 
-
-
-ob_start();
-if ($p === 'home') {
-    require '../pages/home.php';
-} elseif ($p === 'tasks') {
-    require '../pages/tasks.php';
-} elseif ($p === 'single') {
-    require '../pages/single.php';
-} elseif ($p === 'categories') {
-    require '../pages/categories.php';
-}
-$content = ob_get_clean();
-require '../pages/templates/default.php';
+$router = new Router();
+$router->requestRoute();

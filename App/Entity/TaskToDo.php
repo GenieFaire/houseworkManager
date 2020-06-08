@@ -7,12 +7,13 @@ namespace App\Entity;
 class TaskToDo
 {
 
-    private int $_idFamily;
-    private int $id_member;
     private int $_idTask;
+    private int $_idMember;
+    private int $_idFamily;
     private string $_date;
+    private bool $_done;
     private string $_assignmentValue;
-    private bool $_toAssign;
+
 
     /**
      * TaskToDo constructor.
@@ -20,16 +21,16 @@ class TaskToDo
      * @param int $idMember
      * @param int $idTask
      * @param string $date
-     * @param bool $toAssign
+     * @param bool $done
      */
-    public function __construct(int $idFamily, int $idMember, int $idTask, string $date, bool $toAssign)
+    public function __construct(int $idTask, int $idMember, int $idFamily, string $date, bool $done)
     {
-        $this->setIdFamily($idFamily);
-        $this->setIdMember($idMember);
         $this->setIdTask($idTask);
+        $this->setIdMember($idMember);
+        $this->setIdFamily($idFamily);
         $this->setDate($date);
-        $this->setToAssign($toAssign);
-        $this->setAssignmentValue($toAssign);
+        $this->setDone($done);
+        $this->setDoneValue($done);
     }
 
     /**
@@ -37,7 +38,7 @@ class TaskToDo
      */
     public function getIdMember(): int
     {
-        return $this->id_member;
+        return $this->_idMember;
     }
 
     /**
@@ -45,43 +46,43 @@ class TaskToDo
      */
     public function setIdMember(int $idMember): void
     {
-        $this->id_member = $idMember;
+        $this->_idMember = $idMember;
     }
 
     /**
      * @return string
      */
-    public function getAssignmentValue(): string
+    public function getDoneValue(): string
     {
         return $this->_assignmentValue;
     }
 
     /**
-     * @param bool $toAssign
+     * @param bool $done
      */
-    public function setAssignmentValue(bool $toAssign): void
+    public function setDoneValue(bool $done): void
     {
-        if ($toAssign == 0) {
-            $this->_assignmentValue = 'non';
-        } elseif ($toAssign == 1) {
-            $this->_assignmentValue = 'oui';
+        if ($done == 0) {
+            $this->_done = 'non effectuée';
+        } elseif ($done == 1) {
+            $this->_done = 'effectuée';
         }
     }
 
     /**
      * @return bool
      */
-    public function getToAssign(): bool
+    public function getDone(): bool
     {
-        return $this->_toAssign;
+        return $this->_done;
     }
 
     /**
-     * @param bool $toAssign
+     * @param bool $done
      */
-    public function setToAssign(bool $toAssign): void
+    public function setDone(bool $done): void
     {
-        $this->_toAssign = $toAssign;
+        $this->_done = $done;
     }
 
     /**
@@ -113,7 +114,7 @@ class TaskToDo
      */
     public function setIdTask(int $idTask): void
     {
-        $this->idTask = $idTask;
+        $this->_idTask = $idTask;
     }
 
     /**
