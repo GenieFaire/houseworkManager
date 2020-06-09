@@ -14,10 +14,18 @@ class Member
     private string $_pseudo;
     private bool $_actived;
     private int $_code;
-//    private $_gradeName;
 
     /**
      * Member constructor.
+     * @param int $idMember
+     * @param string $password
+     * @param string $birthday
+     * @param int $idFamily
+     * @param bool $grade
+     * @param string $mail
+     * @param string $pseudo
+     * @param bool $actived
+     * @param int $code
      */
     public function __construct(int $idMember, string $password,  string $birthday, int $idFamily, bool $grade, string $mail, string $pseudo, bool $actived, int $code)
     {
@@ -30,7 +38,6 @@ class Member
         $this->setPseudo($pseudo);
         $this->setActived($actived);
         $this->setCode($code);
-//        $this->setGradeName($this->_grade);
     }
 
     /**
@@ -64,32 +71,6 @@ class Member
     {
         $this->_actived = $actived;
     }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getFamilyName()
-//    {
-//        return $this->_familyName;
-//    }
-
-//    public function setGradeName($grade) {
-//        if ($grade == 0) {
-//            $this->_gradeName = "droits restreints";
-//        } else {
-//                $this->_gradeName = 'tous les droits';
-//            }
-//    }
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getGradeName()
-//    {
-//        return $this->_gradeName;
-//    }
-
-
 
     /**
      * @return string
@@ -205,6 +186,4 @@ class Member
     {
         $this->_pseudo = $pseudo;
     }
-
-
 }

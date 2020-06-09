@@ -7,10 +7,11 @@ class Category
     private int $_idCategory;
     private string $_categoryName;
 
+
     /**
      * Category constructor.
-     * @param $_idCategory
-     * @param $_categoryName
+     * @param $idCategory
+     * @param $categoryName
      */
     public function __construct($idCategory, $categoryName)
     {

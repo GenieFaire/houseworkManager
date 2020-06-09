@@ -9,8 +9,8 @@ class Place
 
     /**
      * Place constructor.
-     * @param $_idPlace
-     * @param $_placeName
+     * @param int $idPlace
+     * @param string $placeName
      */
     public function __construct(int $idPlace, string $placeName)
     {

@@ -9,6 +9,8 @@ class Family
 
     /**
      * Family constructor.
+     * @param int $id
+     * @param string $familyName
      */
     public function __construct(int $id, string $familyName)
     {
@@ -25,7 +27,7 @@ class Family
     }
 
     /**
-     * @param int $_idFamily
+     * @param int $idFamily
      */
     public function setIdFamily(int $idFamily): void
     {

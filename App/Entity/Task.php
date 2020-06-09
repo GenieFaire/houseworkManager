@@ -13,6 +13,17 @@ class Task
     private int $_idPlace;
     private int $_idFamily;
 
+    /**
+     * Task constructor.
+     * @param int $id
+     * @param string $name
+     * @param int $duration
+     * @param int $age
+     * @param int $periodicity
+     * @param int $idCategory
+     * @param int $idPlace
+     * @param int $idFamily
+     */
     public function __construct(int $id, string $name, int $duration, int $age, int $periodicity, int $idCategory, int $idPlace, int $idFamily)
     {
         $this->setIdTask($id);
@@ -40,8 +51,6 @@ class Task
     {
         $this->_idFamily = $idFamily;
     }
-
-
 
     /**
      * @return int
