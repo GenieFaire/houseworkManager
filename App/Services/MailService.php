@@ -16,7 +16,7 @@ class MailService {
 Pour activer votre compte, veuillez cliquer sur le lien ci-dessous
 ou copier/coller dans votre navigateur Internet.
  
- http://housework.local:8080/public/index.php?p=member&action=activation&login=' . urlencode($pseudo) . '&code=' . urlencode($code) . '&idMember=' . urlencode($idMember) . '
+ http://housework.local:8080/index.php?p=member&action=activation&pseudo=' . urlencode($pseudo) . '&code=' . urlencode($code) . '&idMember=' . urlencode($idMember) . '
 http://votresite.com/activation.php?log=' . urlencode($pseudo) . '&cle=' . urlencode($code) . '
  
  
@@ -36,7 +36,7 @@ Ceci est un mail automatique, Merci de ne pas y répondre.';
 Vous êtes invité à rejoindre votre famille sur Housework Manager. 
 Pour cela, vous devez cliquer sur le lien ci-dessous afin de choisir un mot de passe et vous connectez à votre compte.
  
- http://housework.local:8080/public/index.php?p=member&action=passwordPage&login=' . urlencode($pseudo) . '&code=' . urlencode($code) . '&idMember=' . urlencode($idMember) . '
+ http://housework.local:8080/index.php?p=member&action=passwordPage&login=' . urlencode($pseudo) . '&code=' . urlencode($code) . '&idMember=' . urlencode($idMember) . '
 http://votresite.com/activation.php?log=' . urlencode($pseudo) . '&cle=' . urlencode($code) . '
  
  
@@ -56,7 +56,7 @@ Ceci est un mail automatique, Merci de ne pas y répondre.';
 Pour réinitialiser votre mot de passe, cliquez sur le lien ci-dessous
 ou copier/coller dans votre navigateur Internet.
  
- http://housework.local:8080/public/index.php?p=member&action=passwordPage&login=' . urlencode($pseudo) . '&code=' . urlencode($code) . '&idMember=' . urlencode($idMember) . '
+ http://housework.local:8080/index.php?p=member&action=passwordPage&login=' . urlencode($pseudo) . '&code=' . urlencode($code) . '&idMember=' . urlencode($idMember) . '
 http://votresite.com/activation.php?log=' . urlencode($pseudo) . '&cle=' . urlencode($code) . '
  
  

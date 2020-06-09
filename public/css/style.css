@@ -8,6 +8,11 @@
     src: url('../fonts/JosefinSans-Regular.ttf');
 }
 
+.password-form {
+justify-content: center;
+    margin: 150px;
+}
+
 .hide {
     display: none;
 }
@@ -21,6 +26,10 @@ h1 {
 h2 {
     font-family: "Allura";
     font-size: 45px;
+}
+
+.info-container {
+    background-color: #f5a3;
 }
 
 .dashboardContainer {
@@ -102,8 +111,13 @@ body {
     box-shadow: 10px 5px 5px gray;
 }
 
-button {
+button, .blue-button {
     background-color: #216ba6;
+    color: #f0f2bb;
+}
+
+.pink-button {
+    background-color: #a6615e;
     color: #f0f2bb;
 }
 

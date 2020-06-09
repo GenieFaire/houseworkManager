@@ -1,7 +1,7 @@
 <p></p>
 <h1>Les tâches</h1>
 <p></p>
-<button id="add" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter une tâche
+<button id="add" class="btn pink-button btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter une tâche
 </button>
 <p></p>
 <table id="table" class="table table-hover">
@@ -11,7 +11,7 @@
         <th style="width:5%;">Durée</th>
         <th style="width:5%;">Age minimum</th>
         <th style="width:15%;">Pièce</th>
-        <th data-field="category" data-filter-control="select" style="width:25%;">Catégorie</th>
+        <th style="width:20%;">Catégorie</th>
         <th style="width:10%;">Récurrence (en jours)</th>
         <th style="width:10%;">Membre</th>
         <th style="width:10%"></th>
@@ -22,9 +22,9 @@
     <tbody id="tab">
     <tr>
         <?php foreach ($datas['tasks'] as $task) : ?>
-        <form action="../public/index.php?p=task" method="post">
-            <th><input type="text" name="idTask" class="form-control border-0 hide"
-                       value="<?= $task->getIdTask(); ?>" READONLY></th>
+        <form action="../index.php?p=task" method="post">
+            <input type="text" name="idTask" class="form-control border-0 hide"
+                       value="<?= $task->getIdTask(); ?>" READONLY>
             <td><input type="text" name="taskName" class="form-control border-0"
                        value="<?= $task->getTaskName(); ?>"></td>
             <td><input type="number" name="duration" class="form-control border-0"
@@ -66,11 +66,11 @@
                 </select>
             </td>
             <td>
-                <button type="submit" class="btn btn-success" name="action" value="update">Modifier</button>
+                <button type="submit" class="btn pink-button" name="action" value="update">Modifier</button>
             </td>
         </form>
         <td>
-            <button class="btn btn-danger" data-toggle="modal" data-target=".modalDelete-<?= $task->getIdTask(); ?>">
+            <button class="btn blue-button" data-toggle="modal" data-target=".modalDelete-<?= $task->getIdTask(); ?>">
                 Supprimer
             </button>
         </td>
@@ -93,9 +93,9 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">Non</button>
-                    <form action="../public/index.php?p=task&action=delete" method="post">
-                        <button type="submit" class="btn btn-primary" name="idTask"
+                    <button class="btn pink-button" data-dismiss="modal">Non</button>
+                    <form action="../index.php?p=task&action=delete" method="post">
+                        <button type="submit" class="btn blue-button" name="idTask"
                                 value="<?= $task->getIdTask(); ?>">Oui
                         </button>
                     </form>
@@ -123,7 +123,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form name="insert" action="../public/index.php?p=task" method="post">
+                <form name="insert" action="../index.php?p=task" method="post">
                     <div class="row">
                         <div class="form-group col-6">
                             <label for="taskName" class="col-form-label">Nom de la tâche : </label>
@@ -163,8 +163,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" name="action" value="addTask">
+                        <button type="button" class="btn blue-button" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn pink-button" name="action" value="addTask">
                     </div>
                 </form>
             </div>

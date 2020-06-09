@@ -17,19 +17,15 @@ abstract class Controller
     protected string $file;
 
     // TODO arranger le render qui va nous péter à la gueule
-    public function render($fileName, $datas = "", $categories = "", $places = "", $members ="", $tasksToDo = "")
+    public function render($fileName, $datas = "")
     {
         $file = "..\\App\\Views\\" . $fileName . ".php";
         if (file_exists($file)) {
             ob_start();
             // TODO remplacer par si la session n'est pas active
-            if (!strpos($file, 'home')) {
+            if (isset($_SESSION['pseudo'])) {
                 require "..\\App\\Views\\templates\\navBar.php";
             }
-            $members;
-            $categories;
-            $places;
-            $tasksToDo;
             $datas;
             require $file;
 

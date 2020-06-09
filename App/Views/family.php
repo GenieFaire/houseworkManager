@@ -1,7 +1,7 @@
 <h1>Voici les membres de la famille</h1>
 <div class="col-11">
 <p></p>
-<button id="add" class="btn btn-success btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter un membre
+<button id="add" class="btn pink-button btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter un membre
 </button>
 
     <p id="pseudoCheck"></p>
@@ -21,7 +21,7 @@
     <tbody id="tab">
     <tr>
         <?php foreach ($datas as $member): ?>
-        <form action="../public/index.php?p=member&idFamily=<?= $member->getIdFamily(); ?>" method="post">
+        <form action="../index.php?p=member&idFamily=<?= $member->getIdFamily(); ?>" method="post">
             <th class="hide"><input type="text" name="idMember" class="form-control border-0"
                        value="<?= $member->getIdMember(); ?>" READONLY></th>
             <td><input type="text" name="pseudo" class="form-control border-0" id="pseudoValue-<?= $member->getIdMember(); ?>"
@@ -39,8 +39,8 @@
             <td><input type="email" name="mail" class="form-control border-0"
                        value="<?= $member->getMail(); ?>"></td>
             <td>
-                <button type="submit" class="btn btn-success" name="action" value="update">Modifier</button>
-                <button class="btn btn-danger" data-toggle="modal" data-target=".modalDelete-<?=$member->getIdMember(); ?>">Supprimer</button>
+                <button type="submit" class="btn pink-button" name="action" value="update">Modifier</button>
+                <button class="btn blue-button" data-toggle="modal" data-target=".modalDelete-<?=$member->getIdMember(); ?>">Supprimer</button>
             </td>
         </form>
     </tr>
@@ -64,9 +64,9 @@
                     </p>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-dismiss="modal">Non</button>
-                    <form action="../public/index.php?p=member&action=delete" method="post">
-                        <button type="submit" class="btn btn-primary" name="idMember"
+                    <button class="btn pink-button" data-dismiss="modal">Non</button>
+                    <form action="../index.php?p=member&action=delete" method="post">
+                        <button type="submit" class="btn blue-button" name="idMember"
                                 value="<?= $member->getIdMember(); ?>">Oui</button>
                     </form>
                 </div>
@@ -92,7 +92,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="../public/index.php?p=member&action=add" method="post">
+                <form action="../index.php?p=member&action=add" method="post">
                     <div class="row">
                         <input type="text" name="idFamily" value="<?= $_SESSION['idFamily']; ?>" HIDDEN/>
                         <div class="form-group col-6">
@@ -101,15 +101,11 @@
                             <p id="pseudoCheck2"></p>
                             <label for="birthday" class="col-form-label">Date de naissance : </label>
                             <input name="birthday" class="form-control" type="date"/>
-                            <label for="mail" class="col-form-label">Adresse email : </label>
-                            <input name="mail" class="form-control" type="email"/>
                         </div>
                         <div class="form-group col-6">
-                            <label for="password" class="col-form-label">Mot de passe : </label>
-                            <input id="password" name="password" class="form-control" type="password"/>
-                            <label for="passwordverif" class="col-form-label" >Saisissez à nouveau le mot de passe : </label>
-                            <input id="passwordverif" name="passwordverif" class="form-control" type="password" onkeyup="passwordVerification()"/>
-                            <div id="err"></div>
+                            <label for="mail" class="col-form-label">Adresse email : </label>
+                            <input name="mail" class="form-control" type="email"/>
+                            <p></p>
                             <label for="grade" class="col-form-label">Droits du membre : </label>
                             <select name="grade" class="form-control">
                                 <option value="0">Droits restreints</option>
@@ -119,24 +115,24 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <input type="submit" class="btn btn-primary" name="action" value="add">
+                        <button type="button" class="btn pink-button" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn blue-button" name="action" value="add">
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script>
-        function passwordVerification()
-        {
-            if(document.getElementById("password").value != document.getElementById("passwordverif").value) {
-                document.getElementById("err").innerHTML = "<p style='color:#ff0000'>Les deux mots de passe ne sont pas identiques</p>";
-            }
-            else {
-                document.getElementById("err").innerHTML = "<p style='color:green'>mot de passe valide</p>";
-            }
-        }
-    </script>
+<!--    <script>-->
+<!--        function passwordVerification()-->
+<!--        {-->
+<!--            if(document.getElementById("password").value != document.getElementById("passwordverif").value) {-->
+<!--                document.getElementById("err").innerHTML = "<p style='color:#ff0000'>Les deux mots de passe ne sont pas identiques</p>";-->
+<!--            }-->
+<!--            else {-->
+<!--                document.getElementById("err").innerHTML = "<p style='color:green'>mot de passe valide</p>";-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
 </div>
 
 <script type='text/javascript'>

@@ -89,7 +89,7 @@ class MemberController extends Controller
         if (isset($param['pseudo']) && $param['pseudo'] != $member->getPseudo()) {
             $member->setPseudo($param['pseudo']);
         }
-        if (!password_verify($param['password'], $member->getPassword())) {
+        if (isset($param['password']) && !password_verify($param['password'], $member->getPassword())) {
             $member->setPassword($param['password']);
         }
         $memberRepository = new MemberRepository();

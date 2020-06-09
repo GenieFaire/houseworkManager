@@ -89,8 +89,8 @@ class TaskController extends Controller
         $members =$memberRepository->getAllMember($_SESSION['idFamily']);
         $tasks = $taskRepository->getAllTask($_SESSION['idFamily']);
 
-        $taskServices = new taskServices();
-        $taskServices->taskAssignement($tasks, $members);
+//        $taskServices = new taskServices();
+//        $taskServices->taskAssignement($tasks, $members);
         $this->generateView();
     }
 

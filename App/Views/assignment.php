@@ -34,7 +34,7 @@
             <td>
                 <p><?= $task->getPeriodicity(); ?></p>
             </td>
-        <form action="../public/index.php?p=tasktodo" method="post">
+        <form action="../index.php?p=tasktodo" method="post">
             <?php foreach ($datas['tasksToDo'] as $taskToDo) {
                 if ($task->getIdTask() === $taskToDo->getIdTask()) {?>
             <td>
@@ -67,7 +67,7 @@
                  <input type="hidden" name="idTask" class="form-control border-0 hide"
                     value="<?= $task->getIdTask(); ?>">
 
-                 <button type="submit" class="btn btn-success" name="action" value="assignment">Assigner</button>
+                 <button type="submit" class="btn pink-button" name="action" value="assignment">Assigner</button>
             </td>
         </form>
     </tr>

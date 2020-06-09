@@ -32,8 +32,8 @@
                                 <h5 class="card-text"><?php echo "Durée (en minutes) : " . $task->getDuration() ?></h5>
                             </div>
                             <div class="task-footer">
-                                <form action="../public/index.php?p=tasktodo&action=done" method="post">
-                                    <button type="submit" class="btn" name="idTask" value="<?= $task->getIdTask() ?> ">J'ai
+                                <form action="../index.php?p=tasktodo&action=done" method="post">
+                                    <button type="submit" class="btn pink-button" name="idTask" value="<?= $task->getIdTask() ?> ">J'ai
                                         fini
                                     </button>
                                 </form>
@@ -52,7 +52,7 @@
                 <div class="card-body">
                     <h3 class="card-title">Mon compte</h3>
                     <p class="card-text">Vos informations personnelles</p>
-                    <a href="../public/index.php?p=member&action=account" class="btn">c'est parti</a>
+                    <a href="../index.php?p=member&action=account" class="btn pink-button">c'est parti</a>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                     <div class="card-body">
                         <h3 class="card-title">Gérer les tâches de la famille</h3>
                         <p class="card-text">C'est ici que l'on crée, ajoute ou supprime des tâches</p>
-                        <a href="../public/index.php?p=task" class="btn">C'est parti</a>
+                        <a href="../index.php?p=task" class="btn pink-button">C'est parti</a>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                     <div class="card-body">
                         <h3 class="card-title">Gérer les membres de la famille</h3>
                         <p class="card-text">C'est ici que l'on crée, ajoute ou supprime des membres</p>
-                        <a href="../public/index.php?p=family" class="btn">C'est parti</a>
+                        <a href="../index.php?p=family" class="btn pink-button">C'est parti</a>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@
                     <div class="card-body">
                         <h3 class="card-title">Assigner les tâches</h3>
                         <p class="card-text">C'est ici que l'on choisit si les tâches sont attibuées automatiquement ou qui les fait</p>
-                        <a href="../public/index.php?p=tasktodo&action=assignmentPage" class="btn">C'est parti</a>
+                        <a href="../index.php?p=tasktodo&action=assignmentPage" class="btn pink-button">C'est parti</a>
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@
         <?php foreach ($datas['tasks']
 
         as $task) : ?>
-        <form action="../public/index.php?p=task" method="post">
+        <form action="../index.php?p=task" method="post">
             <th><input type="text" name="idTask" class="form-control border-0"
                        value="<?= $task->getIdTask(); ?>" READONLY></th>
             <td><input type="text" name="taskName" class="form-control border-0"
@@ -85,7 +85,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-dismiss="modal">Non</button>
-                    <form action="../public/index.php?p=task&action=delete" method="post">
+                    <form action="../index.php?p=task&action=delete" method="post">
                         <button type="submit" class="btn btn-primary" name="idTask"
                                 value="<?= $task->getIdTask(); ?>">Oui
                         </button>
@@ -114,7 +114,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form name="insert" action="../public/index.php?p=task&action=add" method="post">
+                <form name="insert" action="../index.php?p=task&action=add" method="post">
                     <div class="row">
                         <div class="form-group col-6">
                             <label for="taskName" class="col-form-label">Nom de la tâche : </label>

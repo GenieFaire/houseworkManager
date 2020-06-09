@@ -1,12 +1,12 @@
 <p></p>
-<div class="container text-center col-4 mt-5 border border-primary bg-light rounded">
+<div class="container text-center col-6 mt-5 border border-primary info-container rounded">
 
 <h3>Vos informations</h3>
 <div class="form-group">
 
-<form action="../public/index.php?p=member" method="post">
+<form action="../index.php?p=member" method="post">
     <div class="form-group">
-        <input type="text" name="idMember" class="hide"
+        <input type="hidden" name="idMember"
                value="<?= $datas->getIdMember(); ?>">
 
     <label class="col-form-label-lg">Pseudo</label>
@@ -31,7 +31,7 @@
            value="<?= $datas->getMail(); ?>">
             </div>
                 <div class="form-group">
-    <button type="submit" class="btn btn-success btn-lg" name="action" value="update">Modifier</button>
+    <button type="submit" class="btn blue-button btn-lg" name="action" value="update">Modifier</button>
                 </div>
 </form>
 </div>

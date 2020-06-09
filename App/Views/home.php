@@ -13,7 +13,7 @@
                 <div class="col">
                     <h2>Se connecter</h2>
                     <div id="erreur"></div>
-                    <form method='post' enctype="multipart/form-data" action='../public/index.php?p=member'
+                    <form method='post' enctype="multipart/form-data" action='../index.php?p=member'
                           class="">
                         <div class="form-group">
                             <label for="pseudo">Pseudo</label>
@@ -25,7 +25,7 @@
                         </div>
                         <button type="submit" class="btn btn-lg" name="action" value="connexion">Connexion</button>
                     </form>
-                    <a href="../public/index.php?p=member&action=recoveryPassword" id="recoveryPassword"
+                    <a href="../index.php?p=member&action=recoveryPassword" id="recoveryPassword"
                        data-toggle="modal"
                        data-target="#recoveryPasswordModal">Mot de passe oublié ?</a>
 
@@ -47,7 +47,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="../public/index.php?p=family" method="post">
+                <form action="../index.php?p=family" method="post">
                     <div class="row">
                         <div class="form-group col-12">
                             <label for="pseudo" class="col-form-label">Votre pseudo : </label>
@@ -83,7 +83,7 @@
                 <h2 class="modal-title" id="exampleModalLabel">Réinitialiser votre mot de passe</h2>
             </div>
             <div class="modal-body">
-                <form action="../public/index.php?p=member" method="post">
+                <form action="../index.php?p=member" method="post">
                     <div class="form-group col-12">
                         <label for="pseudo" class="col-form-label">Votre pseudo : </label>
                         <input name="pseudo" class="form-control" type="text">

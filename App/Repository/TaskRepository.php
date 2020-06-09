@@ -10,6 +10,7 @@ class TaskRepository extends Database
 
     public function getAllTask(int $idFamily)
     {
+        var_dump($idFamily);
         $tasks = [];
         $query = "SELECT * FROM task WHERE idFamily = :idFamily";
         $request = $this->connection->prepare($query);
