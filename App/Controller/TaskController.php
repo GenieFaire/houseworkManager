@@ -39,7 +39,7 @@ class TaskController extends Controller
     {
 
         $this->checkSession();
-        $this->generateView();
+        $this->generateView($param);
 //        $taskRepository = new TaskRepository();
 //        $categoryRepository = new CategoryRepository();
 //        $placeRepository = new PlaceRepository();
@@ -74,12 +74,11 @@ class TaskController extends Controller
     }
 
     public function addTask(array $param) {
-        var_dump($param);
         $this->checkSession();
         $taskRepository = new TaskRepository();
         $taskToDoRepository = new tasktodoRepository();
         $param['idTask'] = $taskRepository->addTask($param, $_SESSION['idFamily']);
-        $taskToDoRepository->addTaskToDo($_SESSION['idFamily'], $param['idTask'], $param['date']);
+//        $taskToDoRepository->addTaskToDo($_SESSION['idFamily'], $param['idTask'], $param['date']);
         if(isset($param['idMember']) && $param['idMember'] != "") {
             $taskToDoRepository->assignTaskToDo($param, $_SESSION['idFamily']);
         }
@@ -102,7 +101,7 @@ class TaskController extends Controller
         $this->generateView();
     }
 
-    public function generateView() {
+    public function generateView(array $param = null) {
         $categoryRepository = new CategoryRepository();
         $placeRepository = new PlaceRepository();
         $memberRepository = new MemberRepository();
@@ -114,12 +113,25 @@ class TaskController extends Controller
         $datas['categories'] = $categories;
         $members = $memberRepository->getAllMember($_SESSION['idFamily']);
         $datas['members'] = $members;
-        $tasks = $this->getList($_SESSION['idFamily']);
-        $datas['tasks'] = $tasks;
-        $tasksToDo = $taskToDoRepository->getFamilyTasksToDo($_SESSION['idFamily']);
-        $datas['tasksToDo'] = $tasksToDo;
+        if (isset($param['idTask']) && $param['idTask'] != "") {
+            $taskRepository = new TaskRepository();
+            $task = $taskRepository->getOneTask($param['idTask']);
+            $datas['task'] = $task;
+            // TODO récupérer le dernier assignement où l'assignement à la date du jour ou le plus récent
+            $taskToDo = $taskToDoRepository->getOneTaskToDo($param['idTask']);
+            $datas['taskToDo'] = $taskToDo;
+            $this->render("task", $datas);
+        } else {
+            $tasks = $this->getList($_SESSION['idFamily']);
+            $datas['tasks'] = $tasks;
+            $tasksToDo = $taskToDoRepository->getFamilyTasksToDo($_SESSION['idFamily']);
+            $datas['tasksToDo'] = $tasksToDo;
+            $this->render("tasks", $datas);
+        }
 
-        $this->render("tasks", $datas);
+
+
+
     }
 }
 

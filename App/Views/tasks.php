@@ -4,16 +4,16 @@
 <button id="add" class="btn pink-button btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter une tâche
 </button>
 <p></p>
-<table id="table" class="table table-hover">
+<table id="table" class="table table-hover" data-toggle="table" data-search="true">
     <thead>
     <tr>
         <th style="width:20%;">Nom de la tâche</th>
         <th style="width:5%;">Durée</th>
-        <th style="width:5%;">Age minimum</th>
-        <th style="width:15%;">Pièce</th>
-        <th style="width:20%;">Catégorie</th>
+        <th data-sortable="true" data-field="age" style="width:5%;">Age minimum</th>
+        <th data-sortable="true" data-field="place" style="width:15%;">Pièce</th>
+        <th data-sortable="true" data-field="category" style="width:20%;">Catégorie</th>
         <th style="width:10%;">Récurrence (en jours)</th>
-        <th style="width:10%;">Membre</th>
+        <th data-sortable="true" data-field="member" style="width:10%;">Membre</th>
         <th style="width:10%"></th>
         <th style="width:10%"></th>
     </tr>
@@ -22,53 +22,42 @@
     <tbody id="tab">
     <tr>
         <?php foreach ($datas['tasks'] as $task) : ?>
-        <form action="../index.php?p=task" method="post">
-            <input type="text" name="idTask" class="form-control border-0 hide"
-                       value="<?= $task->getIdTask(); ?>" READONLY>
-            <td><input type="text" name="taskName" class="form-control border-0"
-                       value="<?= $task->getTaskName(); ?>"></td>
-            <td><input type="number" name="duration" class="form-control border-0"
-                       value="<?= $task->getDuration(); ?>"></td>
-            <td><input type="number" name="minimumAge" class="form-control border-0"
-                       value="<?= $task->getMinimumAge(); ?>"></td>
-            <td>
-                <select name="idPlace" class="form-control border-0">
-                    <?php foreach ($datas['places'] as $place) : ?>
-                        <option value="<?= $place->getIdPlace() ?>" <?php if ($task->getIdPlace() == $place->getIdPlace()) echo 'selected'; ?>><?= $place->getPlaceName(); ?></option>
-                    <?php endforeach; ?>
-                </select></td>
-            <td>
-                <select name="category" class="form-control border-0">
-                    <?php foreach ($datas['categories'] as $category) : ?>
-                        <option value="<?= $category->getIdCategory() ?>" <?php if ($task->getIdCategory() == $category->getIdCategory()) echo 'selected'; ?>><?= $category->getCategoryName(); ?></option>
-                    <?php endforeach; ?>
-                </select></td>
-            <td><input type="number" name="periodicity" class="form-control border-0"
-                       value="<?= $task->getPeriodicity(); ?>"></td>
-            <td>
-                <select id="idMember" name="idMember" class="form-control">
-                    <?php foreach ($datas['tasksToDo'] as $taskToDo) :
-                    foreach ($datas['members'] as $member)  :
-                            if ($task->getIdTask() === $taskToDo->getIdTask()) {
-                                if ($taskToDo->getIdMember() === 0) {
-                                    echo "<option value='0' selected>A Assigner</option>";
-                                } elseif ($member->getIdMember() === $taskToDo->getIdMember()) {
-                                    echo "<option value=" . $member->getIdMember() . "selected>" . $member->getPseudo() . "</option>";
-                                }
-                            }
-                        endforeach;
-                     endforeach; ?>
-<!--                    si possible sans le selected-->
-                    <?php foreach ($datas['members'] as $member) :
-                        echo "<option value=" . $member->getIdMember() . ">" . $member->getPseudo() . "</option>";
-                     endforeach; ?>
-                    <option value='0'>A Assigner</option>
-                </select>
-            </td>
-            <td>
-                <button type="submit" class="btn pink-button" name="action" value="update">Modifier</button>
-            </td>
-        </form>
+        <!--        <form action="../index.php?p=task" method="post">-->
+        <input type="text" name="idTask" class="form-control border-0 hide"
+               value="<?= $task->getIdTask(); ?>" READONLY>
+        <td><?= $task->getTaskName(); ?></td>
+        <td><?= $task->getDuration(); ?></td>
+        <td><?= $task->getMinimumAge(); ?></td>
+        <td>
+            <?php foreach ($datas['places'] as $place) : ?>
+                <?php if ($task->getIdPlace() == $place->getIdPlace()) echo $place->getPlaceName(); ?>
+            <?php endforeach; ?>
+        </td>
+        <td>
+            <?php foreach ($datas['categories'] as $category) : ?>
+                <?php if ($task->getIdCategory() == $category->getIdCategory()) echo $category->getCategoryName(); ?>
+            <?php endforeach; ?>
+        </td>
+        <td><?= $task->getPeriodicity(); ?></td>
+        <td>
+
+            <?php foreach ($datas['tasksToDo'] as $taskToDo) :
+                foreach ($datas['members'] as $member)  :
+                    if ($task->getIdTask() === $taskToDo->getIdTask()) {
+                        if ($taskToDo->getIdMember() === 0) {
+                            echo "A Assigner";
+                            break;
+                        } elseif ($member->getIdMember() === $taskToDo->getIdMember()) {
+                            echo $member->getPseudo();
+                            break;
+                        }
+                    }
+                endforeach;
+            endforeach; ?>
+        </td>
+        <td>
+            <a href="index.php?p=task&idTask=<?= $task->getIdTask() ?>" class="btn pink-button">Modifier</a>
+        </td>
         <td>
             <button class="btn blue-button" data-toggle="modal" data-target=".modalDelete-<?= $task->getIdTask(); ?>">
                 Supprimer
@@ -132,11 +121,13 @@
                             <input id="duration" name="duration" class="form-control" type="number">
                             <label for="minimumAge" class="col-form-label">Age minimum : </label>
                             <input id="minimumAge" name="minimumAge" class="form-control" type="number">
-                            <label for="periodicity" class="col-form-label">Récurrence (en jours), mettre 0 si elle ne se répète pas : </label>
+                            <label for="periodicity" class="col-form-label">Récurrence (en jours), mettre 0 si elle ne
+                                se répète pas : </label>
                             <input id="periodicity" name="periodicity" class="form-control" type="number">
                         </div>
                         <div class="form-group col-6">
-                            <label for="date" class="col-form-label">Quand : </label>
+                            <label for="date" class="col-form-label">A partir de quand (laissez vide pour un début dès
+                                aujourd'hui) : </label>
                             <input id="date" name="date" class="form-control" type="date">
                             <label for="idMember" class="col-form-label">A qui :</label>
                             <select id="idMember" name="idMember" class="form-control">

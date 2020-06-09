@@ -50,8 +50,14 @@ class TasktodoRepository extends Database
     }
 
     public function getOneTaskToDo(int $idTask)
+
+//SELECT table.login AS login,
+//table.id as id
+//max(table.date) as date
+//FROM table
+//GROUP BY login, id
     {
-        $query = "SELECT * FROM tasktodo WHERE idTask = :idTask";
+        $query = "SELECT idTask, idMember, idFamily, max(date) as date, done FROM tasktodo WHERE idTask = :idTask GROUP BY idTask";
         $request = $this->connection->prepare($query);
         $request->bindValue(':idTask', $idTask, PDO::PARAM_INT);
         $request->execute();
@@ -62,7 +68,7 @@ class TasktodoRepository extends Database
 
     public function addTaskToDo(int $idFamily, int $idTask, string $date): bool
     {
-        $query = "INSERT INTO tasktodo(idTask, idFamily, date) VALUES(:idTask, :idFamily, :date)";
+        $query = "INSERT INTO tasktodo(idTask, idFamily, date, done) VALUES(:idTask, :idFamily, :date, 0)";
         $request = $this->connection->prepare($query);
         $request->bindValue(':idFamily', $idFamily, PDO::PARAM_INT);
         $request->bindValue(':idTask', $idTask, PDO::PARAM_INT);

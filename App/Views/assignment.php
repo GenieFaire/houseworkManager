@@ -1,20 +1,20 @@
-<p></p>
-<h1>Les tâches à assigner</h1>
-
-<p></p>
-<table id="table" class="table table-hover">
-    <thead>
-    <tr>
-        <th>Nom de la tâche</th>
-        <th>Age minimum</th>
-        <th>Pièce</th>
-        <th>Récurrence (en jours)</th>
-        <th>Date de début</th>
-        <th>Durée de l'assignment</th>
-        <th></th>
-        <th></th>
-    </tr>
-    </thead>
+<!--<p></p>-->
+<!--<h1>Les tâches à assigner</h1>-->
+<!---->
+<!--<p></p>-->
+<!--<table id="table" class="table table-hover">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>Nom de la tâche</th>-->
+<!--        <th>Age minimum</th>-->
+<!--        <th>Pièce</th>-->
+<!--        <th>Récurrence (en jours)</th>-->
+<!--        <th>Date de début</th>-->
+<!--        <th>Durée de l'assignment</th>-->
+<!--        <th></th>-->
+<!--        <th></th>-->
+<!--    </tr>-->
+<!--    </thead>-->
 
     <tbody id="tab">
     <tr>
