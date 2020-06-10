@@ -8,14 +8,14 @@
     <div class="row dashboardContainer">
 <!--        les tâches à faire-->
 <div class="column col-6">
-    <?php
+    <?php setlocale(LC_TIME, 'fr', 'fr_FR', 'fr_FR.ISO8859-1');
     if ($datas === null) { ?>
         <h3>Vous n'avez aucune tâche à effectuer</h3>
     <?php } else {
 
         foreach ($datas['uniqueDates'] as $date) { ?>
 
-            <h4><?= date('d-m-Y', strtotime($date)); ?></h4>
+            <h4 class="date"><?= strftime('%A %d %B %Y', strtotime($date)); ?></h4>
             <?php foreach ($datas['tasksToDo'] as $taskToDo) {
                 foreach ($datas['tasks'] as $task) {
 

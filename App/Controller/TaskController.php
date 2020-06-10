@@ -78,7 +78,10 @@ class TaskController extends Controller
         $taskRepository = new TaskRepository();
         $taskToDoRepository = new tasktodoRepository();
         $param['idTask'] = $taskRepository->addTask($param, $_SESSION['idFamily']);
-//        $taskToDoRepository->addTaskToDo($_SESSION['idFamily'], $param['idTask'], $param['date']);
+        if($param['date'] == '') {
+            $param['date'] = date('Y-m-d');
+        }
+        $taskToDoRepository->addTaskToDo($_SESSION['idFamily'], $param['idTask'], $param['date']);
         if(isset($param['idMember']) && $param['idMember'] != "") {
             $taskToDoRepository->assignTaskToDo($param, $_SESSION['idFamily']);
         }
@@ -93,7 +96,6 @@ class TaskController extends Controller
         $this->generateView();
     }
 
-    // TODO supprimer la taskToDO pas done
     public function delete(array $param) {
         $this->checkSession();
         $taskRepository = new TaskRepository();

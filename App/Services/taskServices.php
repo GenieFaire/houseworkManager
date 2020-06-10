@@ -30,6 +30,9 @@ class taskServices
         // TODo ajouter la tâche sur les prochains mois
     }
 
+    public function setCurrentDate() {
+        return date("Y-m-d");
+    }
 
 
 // TODO récupérer les tâches non assignées

@@ -161,25 +161,6 @@
             </div>
         </div>
     </div>
-
 </div>
-<!--<script>-->
-<!--    // TODO faire une liste de members aussi ici-->
-<!--    function printMembers() {-->
-<!--        let field = document.getElementById('choose');-->
-<!--        let toAssign = document.getElementById('toAssign2').value;-->
-<!--        console.log(toAssign);-->
-<!--        console.log(field);-->
-<!--        if (toAssign == 1) {-->
-<!--            field.style.display = "block";-->
-<!--            // field.className = 'd-flex';-->
-<!--            // label.className = 'd-flex';-->
-<!--        } else if (toAssign == 0) {-->
-<!--            field.style.display = "none";-->
-<!--            // field.className = 'd-none';-->
-<!--            // label.className = 'd-none';-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
 
 

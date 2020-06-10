@@ -41,14 +41,20 @@
                 </div>
             </div>
 
-
-            <div class="form-group">
+            <div class="row justify-content-between">
+            <div class="form-group col-6">
                 <label for="category">Catégorie de la tâche :</label>
                 <select name="category" id="category" class="form-control border-0">
                     <?php foreach ($datas['categories'] as $category) : ?>
                         <option value="<?= $category->getIdCategory() ?>" <?php if ($datas['task']->getIdCategory() == $category->getIdCategory()) echo 'selected'; ?>><?= $category->getCategoryName(); ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+                <div class="form-group col-6">
+                    <label for="date">Date :</label>
+                    <input type="date" name="date" id="date" class="form-control border-0"
+                           value="<?= $datas['taskToDo']->getDate(); ?>">
+                </div>
             </div>
         </div>
         <div class="form-group col-4">
