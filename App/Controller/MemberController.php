@@ -215,7 +215,6 @@ class MemberController extends Controller
 
     public function generateView(int $idMember)
     {
-
         $taskToDoRepository = new tasktodoRepository();
         $tasksToDo = $taskToDoRepository->getMemberTasksToDo($idMember);
 
@@ -231,7 +230,10 @@ class MemberController extends Controller
             foreach ($tasksToDo as $tasktodo) {
                 $idTask = $tasktodo->getIdTask();
                 $task = $taskRepository->getOneTask($idTask);
-                if ($task !== false) $tasks[] = $task;
+                if ($task !== false) {
+                    $tasks[] = $task;
+
+                }
                 $datas['tasks'] = $tasks;
                 $dates[] = $tasktodo->getDate();
             }

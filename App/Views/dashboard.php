@@ -12,13 +12,13 @@
                 <h3>Vous n'avez aucune tâche à effectuer</h3>
             <?php } else {
 
-            foreach ($datas['uniqueDates'] as $date) { ?>
+                foreach ($datas['uniqueDates'] as $date) { ?>
 
-                <h4 class="date"><?= strftime('%A %d %B %Y', strtotime($date)); ?></h4>
-                <?php foreach ($datas['tasksToDo'] as $taskToDo) :
-                    foreach ($datas['tasks'] as $task) :
-                    if (date('d-m-Y', strtotime($date)) == date('d-m-Y', strtotime($taskToDo->getDate())) && $task->getIdTask() == $taskToDo->getIdTask()) {
-                        ?>
+                    <h4 class="date"><?= strftime('%A %d %B %Y', strtotime($date)); ?></h4>
+                    <?php foreach ($datas['tasksToDo'] as $taskToDo) :
+                        foreach ($datas['tasks'] as $task) :
+                            if (date('d-m-Y', strtotime($date)) == date('d-m-Y', strtotime($taskToDo->getDate())) && $task->getIdTask() == $taskToDo->getIdTask()) {
+                                ?>
 
                                 <div class="row task">
                                     <div class="task-header"><h3><?= $task->getTaskName() ?></h3></div>
@@ -42,11 +42,10 @@
                                 </div>
 
                             <?php }
-
                         endforeach;
-
-                endforeach;
-            } }?>
+                    endforeach;
+                }
+            } ?>
         </div>
         <!--        Le menu-->
         <div class="column col-4">
