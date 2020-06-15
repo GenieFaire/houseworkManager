@@ -3,27 +3,26 @@
 namespace App\Controller;
 
 
+use App\Repository\CategoryRepository;
+use App\Repository\PlaceRepository;
 use Exception;
 
 abstract class Controller
 {
 
-    // Action à réaliser
     protected $action;
 
-    // Requête entrante
     protected array $request;
 
     protected string $file;
 
-    // TODO arranger le render qui va nous péter à la gueule
     public function render($fileName, $datas = "")
     {
         $root = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
         $file = $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . $fileName . ".php";
         if (file_exists($file)) {
             ob_start();
-            // TODO remplacer par si la session n'est pas active
+
             if (isset($_SESSION['pseudo'])) {
                 require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR ."navBar.php";
             }
@@ -50,6 +49,7 @@ abstract class Controller
         //..
     }
 
+    // nettoyage des input utilisateurs
     public function cleanInput($datas): array
     {
         foreach ($datas as $key => $value) {
@@ -93,7 +93,17 @@ abstract class Controller
         }
     }
 
+    protected function getPlacesList() {
+        $placeRepository = new PlaceRepository();
+        $places = $placeRepository->getAllPlace();
+        return $places;
+    }
 
+    protected function getCategoriesList() {
+        $categoryRepository = new CategoryRepository();
+        $categories = $categoryRepository->getAllCategory();
+        return $categories;
+    }
 
     public abstract function index(array $param);
 

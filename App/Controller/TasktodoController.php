@@ -3,17 +3,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Member;
-use App\Entity\Task;
-use App\Entity\TaskToDo;
-use App\Repository\CategoryRepository;
 use App\Repository\MemberRepository;
-use App\Repository\PlaceRepository;
 use App\Repository\TaskRepository;
 use App\Repository\TasktodoRepository;
 use App\Services\taskServices;
 
-class TasktodoController extends TaskBaseController
+class TasktodoController extends Controller
 {
     public function index($param = "")
     {
@@ -30,34 +25,34 @@ class TasktodoController extends TaskBaseController
     }
 
 
-    public function generateView($action = "")
-    {
-
-        $taskToDoRepository = new tasktodoRepository();
-        $tasksToDo = $taskToDoRepository->getMemberTasksToDo($_SESSION['idMember']);
-        $datas['tasksToDo'] = $tasksToDo;
-
-        if ($tasksToDo != false) {
-            $datas['places'] = $this->getPlacesList();
-            $datas['categories'] = $this->getCategoriesList();
-
-            $taskRepository = new TaskRepository();
-
-            $tasks = [];
-            foreach ($tasksToDo as $tasktodo) {
-                $idTask = $tasktodo->getIdTask();
-                $task = $taskRepository->getOneTask($idTask);
-                if ($task !== false) $tasks[] = $task;
-                $datas['tasks'] = $tasks;
-                $dates[] = $tasktodo->getDate();
-            }
-            $result = array_unique($dates);
-            $datas['uniqueDates'] = $result;
-        } else {
-            $datas = null;
-        }
-        $this->render("dashboard", $datas);
-    }
+//    public function generateView($action = "")
+//    {
+//
+//        $taskToDoRepository = new tasktodoRepository();
+//        $tasksToDo = $taskToDoRepository->getMemberTasksToDo($_SESSION['idMember']);
+//        $datas['tasksToDo'] = $tasksToDo;
+//
+//        if ($tasksToDo != false) {
+//            $datas['places'] = $this->getPlacesList();
+//            $datas['categories'] = $this->getCategoriesList();
+//
+//            $taskRepository = new TaskRepository();
+//
+//            $tasks = [];
+//            foreach ($tasksToDo as $tasktodo) {
+//                $idTask = $tasktodo->getIdTask();
+//                $task = $taskRepository->getOneTask($idTask);
+//                if ($task !== false) $tasks[] = $task;
+//                $datas['tasks'] = $tasks;
+//                $dates[] = $tasktodo->getDate();
+//            }
+//            $result = array_unique($dates);
+//            $datas['uniqueDates'] = $result;
+//        } else {
+//            $datas = null;
+//        }
+//        $this->render("dashboard", $datas);
+//    }
 
     public function updateTask(array $param)
     {

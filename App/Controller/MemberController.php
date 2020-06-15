@@ -5,6 +5,8 @@ namespace App\Controller;
 
 use App\Repository\MemberRepository;
 use App\Entity\Member;
+use App\Repository\TaskRepository;
+use App\Repository\TasktodoRepository;
 use App\Services\MailService;
 
 
@@ -46,7 +48,7 @@ class MemberController extends Controller
         // TODO voir l'utilité du cleaninput
         $param = $this->cleanInput($param);
         $this->checkSession();
-        header("Location: index.php?p=tasktodo");
+        $this->generateView($param);
     }
 
     public function connexion(array $param)
@@ -62,10 +64,9 @@ class MemberController extends Controller
                     header("Location: index.php?p=home&param=1");
                 } else {
                     $this->setSession($member->getPseudo(), $member->getIdFamily(), $member->getGrade(), $member->getIdMember());
-                    header("Location: index.php?p=tasktodo");
+                    $this->generateView($member->getIdMember());
                 }
             } else {
-                // TODO si t'as le temps, envoi mail de validation de compte
                 header("Location: index.php?p=home&param=4");
             }
         }
@@ -114,7 +115,7 @@ class MemberController extends Controller
             if ($response === true) {
                 $memberRepository->activationAccount($param);
                 $this->setSession($member->getPseudo(), $member->getIdFamily(), $member->getGrade(), $member->getIdMember());
-                header("Location: index.php?p=tasktodo");
+                $this->generateView($param);
             }
         } else {
             header("Location: index.php?p=home&param=6");
@@ -183,7 +184,8 @@ class MemberController extends Controller
         $this->setSession($member->getPseudo(), $member->getIdFamily(), $member->getGrade(), $member->getIdMember());
         $memberRepository = new MemberRepository();
         $memberRepository->update($member);
-        header("Location: index.php?p=tasktodo");
+        $this->generateView($param);
+//        header("Location: index.php?p=tasktodo");
     }
 
     public function recoveryPassword(array $param)
@@ -213,5 +215,35 @@ class MemberController extends Controller
         $memberRepository = new MemberRepository();
         $response = $memberRepository->uniquePseudo($param['pseudo']);
         echo $response['number'];
+    }
+
+    public function generateView(int $idMember)
+    {
+
+        $taskToDoRepository = new tasktodoRepository();
+        $tasksToDo = $taskToDoRepository->getMemberTasksToDo($idMember);
+
+        $datas['tasksToDo'] = $tasksToDo;
+
+        if ($tasksToDo != false) {
+            $datas['places'] = $this->getPlacesList();
+            $datas['categories'] = $this->getCategoriesList();
+
+            $taskRepository = new TaskRepository();
+
+            $tasks = [];
+            foreach ($tasksToDo as $tasktodo) {
+                $idTask = $tasktodo->getIdTask();
+                $task = $taskRepository->getOneTask($idTask);
+                if ($task !== false) $tasks[] = $task;
+                $datas['tasks'] = $tasks;
+                $dates[] = $tasktodo->getDate();
+            }
+            $result = array_unique($dates);
+            $datas['uniqueDates'] = $result;
+        } else {
+            $datas = null;
+        }
+        $this->render("dashboard", $datas);
     }
 }

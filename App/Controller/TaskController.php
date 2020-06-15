@@ -9,7 +9,7 @@ use App\Repository\TaskRepository;
 use App\Repository\TasktodoRepository;
 use App\Services\taskServices;
 
-class TaskController extends TaskBaseController
+class TaskController extends Controller
 {
     public function index(array $param)
     {
@@ -164,6 +164,14 @@ class TaskController extends TaskBaseController
             $date = date('Y-m-d', strtotime($param['date'] . '+' . $i . 'days'));
             $taskToDoRepository->assignTaskToDo($task->getIdTask(), $idMember, $date);
         }
+    }
+
+    public function done(array $param)
+    {
+        $this->checkSession();
+        $taskToDoRepository = new tasktodoRepository();
+        $taskToDoRepository->doneTask((int)$param['idTask']);
+        $this->generateView($param);
     }
 }
 

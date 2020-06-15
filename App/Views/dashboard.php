@@ -32,7 +32,7 @@
                                         <h5 class="card-text"><?php echo "Durée (en minutes) : " . $task->getDuration() ?></h5>
                                     </div>
                                     <div class="task-footer">
-                                        <form action="../index.php?p=tasktodo&action=done" method="post">
+                                        <form action="../index.php?p=task&action=done" method="post">
                                             <button type="submit" class="btn pink-button" name="idTask"
                                                     value="<?= $task->getIdTask() ?> ">J'ai
                                                 fini

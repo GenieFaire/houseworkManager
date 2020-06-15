@@ -18,14 +18,14 @@ class Database
                 $this->connection = new PDO(
                     'mysql:host=localhost;dbname=housework_manager',
                     'housework',
-                    'R7DUsmE_SmEGVY9',
+                    'rcBdk@ZkqAP8aP2',
                     array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
                 );
             } else {
                 $this->connection = new PDO(
                     'mysql:host=mysql-housework.alwaysdata.net;dbname=housework_manager',
                     'housework',
-                    'R7DUsmE_SmEGVY9',
+                    'rcBdk@ZkqAP8aP2',
                     array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
                 );
             }
