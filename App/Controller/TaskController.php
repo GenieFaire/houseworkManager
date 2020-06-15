@@ -3,137 +3,167 @@
 
 namespace App\Controller;
 
-use App\Entity\Member;
+use App\Entity\Task;
 use App\Repository\MemberRepository;
-use App\Repository\PlaceRepository;
 use App\Repository\TaskRepository;
-use App\Repository\CategoryRepository;
-use App\Repository\TaskToDoRepository;
+use App\Repository\TasktodoRepository;
 use App\Services\taskServices;
 
-class TaskController extends Controller
+class TaskController extends TaskBaseController
 {
-
-    public static function addNewTask(string $name, int $duration, int $age, int $periodicity, int $category, int $assignment, int $place): void
+    public function index(array $param)
     {
-        $taskRepository = new TaskRepository();
-        $task = $taskRepository->addTask($name, $duration, $age, $periodicity, $category, $assignment, $place);
-
-        if ($task === false) {
-            echo 'La ligne na pas été rentrée';
-        } else {
-            echo 'Ligne rentrée avec succès';
-        }
+        $this->checkSession();
+        $this->generateView($param);
     }
 
-    /**
-     *
-     */
     public function getList()
     {
         $taskRepository = new TaskRepository();
         return $taskRepository->getAllTask($_SESSION['idFamily']);
     }
 
-    public function index(array $param)
+//    TODO copiée dans taskToDo (peut être envisagé de fusionner les deux controlleurs
+    public function update(array $param)
     {
-
-        $this->checkSession();
-        $this->generateView($param);
-//        $taskRepository = new TaskRepository();
-//        $categoryRepository = new CategoryRepository();
-//        $placeRepository = new PlaceRepository();
-//        $memberRepository = new MemberRepository();
-//        $taskToDoRepository = new tasktodoRepository();
-//
-//        $places = $placeRepository->getAllPlace();
-//        $categories = $categoryRepository->getAllCategory();
-//        $members = $memberRepository->getAllMember($_SESSION['idFamily']);
-//
-//
-//        if (isset($param['action']) && $param['action'] === 'update') {
-//            $taskRepository->updateTask($param);
-//        } elseif (isset($param['action']) && $param['action'] === 'add') {
-//        } elseif (isset($param['action']) && $param['action'] === 'delete') {
-//        }
-//        $assignmentTask = $taskToDoRepository->getAllTaskToDo($_SESSION['idFamily']);
-//        $tasks = $this->getList();
-//        $this->render("tasks", $tasks, $categories, $places, $members, $assignmentTask);
-    }
-
-    public function update(array $param) {
         $this->checkSession();
         $taskRepository = new TaskRepository();
-        $taskToDo = new TaskToDoRepository();
-        $checkTask = $taskToDo->getOneTaskToDo($param['idTask']);
-        if($checkTask->getIdMember() != $param['idMember']) {
-            $taskToDo->assignTaskToDo($param, $_SESSION['idFamily']);
-        }
-        $taskRepository->updateTask($param);
-        $this->generateView();
+        // TODO doit retourner la tâche Task
+
+        $datas = $taskRepository->updateTask($param);
+        $task = new Task($datas->idTask, $datas->taskName, $datas->duration, $datas->minimumAge, $datas->periodicity, $datas->idCategory, $datas->idPlace, $datas->idFamily);
+        return $task;
     }
 
-    public function addTask(array $param) {
+    public function updateTask(array $param)
+    {
+        var_dump($param);
         $this->checkSession();
         $taskRepository = new TaskRepository();
         $taskToDoRepository = new tasktodoRepository();
-        $param['idTask'] = $taskRepository->addTask($param, $_SESSION['idFamily']);
-        if($param['date'] == '') {
+
+        //update de la tâche
+        $taskRepository->updateTask($param);
+        //récupération de la tâche
+        $task = $taskRepository->getOneTask($param['idTask']);
+
+        // assignation de la tâche ok
+        $idMember = $this->assignmentTask($param, $task);
+
+//        if ($param['date'] == '') {
+//            $param['date'] = date('Y-m-d');
+//        }
+
+        if (isset($param['today']) && $param['today'] == 1) {
             $param['date'] = date('Y-m-d');
         }
-        $taskToDoRepository->addTaskToDo($_SESSION['idFamily'], $param['idTask'], $param['date']);
-        if(isset($param['idMember']) && $param['idMember'] != "") {
-            $taskToDoRepository->assignTaskToDo($param, $_SESSION['idFamily']);
-        }
 
-        $memberRepository = new MemberRepository();
-        // récupérer les membres du plus jeune au plus vieu
-        $members =$memberRepository->getAllMember($_SESSION['idFamily']);
-        $tasks = $taskRepository->getAllTask($_SESSION['idFamily']);
-
-//        $taskServices = new taskServices();
-//        $taskServices->taskAssignement($tasks, $members);
+        //mise en base de la TaskToDo
+        $this->addTaskToDoToDatabase($param, $taskToDoRepository, $idMember, $task);
         $this->generateView();
     }
 
-    public function delete(array $param) {
+    public function addTask(array $param)
+    {
+        $this->checkSession();
+        $taskRepository = new TaskRepository();
+        $taskToDoRepository = new tasktodoRepository();
+
+        // Création de la task
+        $param['idTask'] = $taskRepository->addTask($param, $_SESSION['idFamily']);
+
+        //récupération de la tâche
+        $task = $taskRepository->getOneTask($param['idTask']);
+
+        // assignation de la tâche
+        $idMember = $this->assignmentTask($param, $task);
+
+        // vérification du champ date et ajout de la date du jour si pas définie par l'user
+        if ($param['date'] == '') {
+            $param['date'] = date('Y-m-d');
+        }
+
+        //mise en base de la TaskToDo
+        $this->addTaskToDoToDatabase($param, $taskToDoRepository, $idMember, $task);
+        $this->generateView();
+    }
+
+    public function delete(array $param)
+    {
         $this->checkSession();
         $taskRepository = new TaskRepository();
         $taskRepository->deleteTask($param['idTask']);
         $this->generateView();
     }
 
-    public function generateView(array $param = null) {
-        $categoryRepository = new CategoryRepository();
-        $placeRepository = new PlaceRepository();
+    public function generateView(array $param = null)
+    {
+
         $memberRepository = new MemberRepository();
         $taskToDoRepository = new tasktodoRepository();
 
-        $places = $placeRepository->getAllPlace();
-        $datas['places'] = $places;
-        $categories = $categoryRepository->getAllCategory();
-        $datas['categories'] = $categories;
+        $datas['places'] = $this->getPlacesList();
+        $datas['categories'] = $this->getCategoriesList();
+
         $members = $memberRepository->getAllMember($_SESSION['idFamily']);
         $datas['members'] = $members;
+
         if (isset($param['idTask']) && $param['idTask'] != "") {
             $taskRepository = new TaskRepository();
             $task = $taskRepository->getOneTask($param['idTask']);
             $datas['task'] = $task;
-            // TODO récupérer le dernier assignement où l'assignement à la date du jour ou le plus récent
             $taskToDo = $taskToDoRepository->getOneTaskToDo($param['idTask']);
             $datas['taskToDo'] = $taskToDo;
+
             $this->render("task", $datas);
         } else {
-            $tasks = $this->getList($_SESSION['idFamily']);
-            $datas['tasks'] = $tasks;
-            $tasksToDo = $taskToDoRepository->getFamilyTasksToDo($_SESSION['idFamily']);
-            $datas['tasksToDo'] = $tasksToDo;
+            $tasks = $this->getList();
+            if ($tasks != false) {
+                foreach ($tasks as $task) {
+                    $tasksToDo[] = $taskToDoRepository->getOneTaskToDo($task->getIdTask());
+                }
+                $datas['tasksToDo'] = $tasksToDo;
+                $datas['tasks'] = $tasks;
+            } else {
+                $datas['tasksToDo'] = null;
+            }
             $this->render("tasks", $datas);
         }
+    }
 
+    /**
+     * @param array $param
+     * @param Task $task
+     * @return int
+     */
+    private function assignmentTask(array $param, Task $task): int
+    {
+        if (!isset($param['idMember']) && $param['idMember'] != "") {
+            $idAssignedMember = $param['idMember'];
+        } else {
+            $memberRepository = new MemberRepository();
+            $members = $memberRepository->getAllMember($_SESSION['idFamily']);
+            $taskServices = new taskServices();
+            $idAssignedMember = $taskServices->taskAssignment($task->getMinimumAge(), $members);
+        }
+        return $idAssignedMember;
+    }
 
+    /**
+     * @param array $param
+     * @param TaskToDoRepository $taskToDoRepository
+     * @param int $idMember
+     * @param Task $task
+     */
+    private function addTaskToDoToDatabase(array $param, TaskToDoRepository $taskToDoRepository, int $idMember, Task $task): void
+    {
+        $periodicity = $task->getPeriodicity();
+        $assignmentDuring = $param['assignmentDuring'];
 
-
+        for ($i = 0; $i < $assignmentDuring; $i += $periodicity) {
+            $date = date('Y-m-d', strtotime($param['date'] . '+' . $i . 'days'));
+            $taskToDoRepository->assignTaskToDo($task->getIdTask(), $idMember, $date);
+        }
     }
 }
 

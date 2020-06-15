@@ -11,51 +11,24 @@ use App\Entity\TaskToDo;
 class taskServices
 {
 
-    public function dailyRepeat(Task $task, array $members) {
-        $this->taskAssignement($task, $members);
-        $assignedTask = new TaskToDo();
-    }
-
-    public function weeklyRepeat(Task $task, array $members)
+    public function setCurrentDate()
     {
-
-        // TODO ajouter la tâche à faire pour les 7 prochains jours
-        $idMember = $this->taskAssignement($task, $members);
-        $assignedTask = new TaskToDo($task->getIdTask(), $idMember, $member->getIdMember);
-
-    }
-
-    public function monthlyRepeat()
-    {
-        // TODo ajouter la tâche sur les prochains mois
-    }
-
-    public function setCurrentDate() {
         return date("Y-m-d");
     }
 
-
-// TODO récupérer les tâches non assignées
-// TODO retourne l'idMember choisi
-    public function taskAssignement(Task $tasks, array $members)
+    public function taskAssignment(int $minimumAge, array $members): int
     {
-        foreach ($tasks as $task) {
+        shuffle($members);
         foreach ($members as $member) {
             $age = $this->memberAge($member);
-
-        if ($age >= $task->getMinimumAge()) {
-//            $random[$member->getIdMember()] = $age;
-            $assignment[$task->getIdTask()] = $member->getIdMember();
-            var_dump($assignment); // calcul age correct
+            if ($age >= $minimumAge) {
+                return $member->getIdMember();
+                break;
+            }
         }
     }
 
-            // Ne pas mettre trop de tâches à la même personne
-        }
-    }
-
-    private
-    function memberAge($member)
+    private function memberAge($member)
     {
         $memberBirthday = explode('-', $member->getBirthday());
         $date = explode('/', date('Y/m/d'));

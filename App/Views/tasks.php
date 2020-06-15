@@ -1,6 +1,9 @@
 <p></p>
 <h1>Les tâches</h1>
-<p></p>
+<?php if ($datas['tasksToDo'] == null) { ?>
+    <button id="add" class="btn pink-button btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter une tâche
+    </button>
+    <?php } else { ?>
 <button id="add" class="btn pink-button btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter une tâche
 </button>
 <p></p>
@@ -22,7 +25,6 @@
     <tbody id="tab">
     <tr>
         <?php foreach ($datas['tasks'] as $task) : ?>
-        <!--        <form action="../index.php?p=task" method="post">-->
         <input type="text" name="idTask" class="form-control border-0 hide"
                value="<?= $task->getIdTask(); ?>" READONLY>
         <td><?= $task->getTaskName(); ?></td>
@@ -40,17 +42,10 @@
         </td>
         <td><?= $task->getPeriodicity(); ?></td>
         <td>
-
             <?php foreach ($datas['tasksToDo'] as $taskToDo) :
                 foreach ($datas['members'] as $member)  :
-                    if ($task->getIdTask() === $taskToDo->getIdTask()) {
-                        if ($taskToDo->getIdMember() === 0) {
-                            echo "A Assigner";
-                            break;
-                        } elseif ($member->getIdMember() === $taskToDo->getIdMember()) {
+                    if ($task->getIdTask() == $taskToDo->getIdTask() && $member->getIdMember() == $taskToDo->getIdMember()) {
                             echo $member->getPseudo();
-                            break;
-                        }
                     }
                 endforeach;
             endforeach; ?>
@@ -96,6 +91,7 @@
     <?php endforeach; ?>
     </tbody>
 </table>
+<?php } ?>
 
 
 <!--modale d'insertion-->
@@ -106,7 +102,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ajouter une nouvelle tâche</h5>
+                <h3 class="modal-title" id="exampleModalLabel">Ajouter une nouvelle tâche</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -117,26 +113,19 @@
                         <div class="form-group col-6">
                             <label for="taskName" class="col-form-label">Nom de la tâche : </label>
                             <input id="taskName" name="taskName" class="form-control" type="text" maxlength="100">
-                            <label for="duration" class="col-form-label">Durée estimée : </label>
-                            <input id="duration" name="duration" class="form-control" type="number">
-                            <label for="minimumAge" class="col-form-label">Age minimum : </label>
-                            <input id="minimumAge" name="minimumAge" class="form-control" type="number">
-                            <label for="periodicity" class="col-form-label">Récurrence (en jours), mettre 0 si elle ne
-                                se répète pas : </label>
+                            <div class="row justify-content-between">
+                                <div class="form-group col-6">
+                                <label for="duration" class="col-form-label">Durée estimée : </label>
+                                <input id="duration" name="duration" class="form-control" type="number">
+                                </div>
+                                <div class="form-group col-6">
+                                <label for="minimumAge" class="col-form-label">Age minimum : </label>
+                                <input id="minimumAge" name="minimumAge" class="form-control" type="number">
+                                </div>
+                            </div>
+                            <label for="periodicity" class="col-form-label">Récurrence (en jours) : </label>
                             <input id="periodicity" name="periodicity" class="form-control" type="number">
-                        </div>
-                        <div class="form-group col-6">
-                            <label for="date" class="col-form-label">A partir de quand (laissez vide pour un début dès
-                                aujourd'hui) : </label>
-                            <input id="date" name="date" class="form-control" type="date">
-                            <label for="idMember" class="col-form-label">A qui :</label>
-                            <select id="idMember" name="idMember" class="form-control">
-                                <option value="0">à assigner aléatoirement</option>
-                                <?php foreach ($datas['members'] as $member) : ?>
-                                    <option value="<?= $member->getIdMember() ?>"><?= $member->getPseudo(); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-
+                            <small class="form-text text-muted">mettre 0 si elle ne se répète pas</small>
                             <label for="idCategory" class="col-form-label">Catégorie : </label>
                             <select id="idCategory" name="idCategory" class="form-control">
                                 <?php foreach ($datas['categories'] as $category) : ?>
@@ -150,7 +139,50 @@
                                     <option value="<?= $place->getIdPlace() ?>"><?= $place->getPlaceName(); ?></option>
                                 <?php endforeach; ?>
                             </select>
+                        </div>
 
+                        <div class="form-group col-6">
+                            <div class="form-group">
+                                <label for="date" class="col-form-label">Date de début : </label>
+                                <input id="date" name="date" class="form-control" type="date">
+                                <small class="form-text text-muted">laissez vide pour un début dès aujourd'hui</small>
+                                <label for="idMember" class="col-form-label">A qui :</label>
+                                <select id="idMember" name="idMember" class="form-control">
+                                    <option value="0">à assigner aléatoirement</option>
+                                    <?php foreach ($datas['members'] as $member) : ?>
+                                        <option value="<?= $member->getIdMember() ?>"><?= $member->getPseudo(); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <p>Pour quelle durée souhaitez-vous assigner la tâche à une même personne :</p>
+                                </div>
+
+                                <div class="col-6">
+                                    <input type="radio" id="seven" name="assignmentDuring" value="7">
+                                    <label for="seven">Pour une semaine</label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="radio" id="thirty" name="assignmentDuring" value="30">
+                                    <label for="thirty">Pour un mois</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-6">
+                                    <input type="radio" id="once" name="assignmentDuring" value="1">
+                                    <label for="once">Pour cette fois</label>
+                                </div>
+                                <div class="col-6">
+                                    <input type="radio" id="no" name="assignmentDuring" value="0">
+                                    <label for="once">Ne pas assigner</label>
+                                </div>
+                                <div class="col-12">
+                                <small class="form-text text-muted">Vous pourrez changer l'assignation à tout moment</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -162,5 +194,4 @@
         </div>
     </div>
 </div>
-
 

@@ -19,18 +19,19 @@ abstract class Controller
     // TODO arranger le render qui va nous péter à la gueule
     public function render($fileName, $datas = "")
     {
-        $file = "..\\App\\Views\\" . $fileName . ".php";
+        $root = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+        $file = $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . $fileName . ".php";
         if (file_exists($file)) {
             ob_start();
             // TODO remplacer par si la session n'est pas active
             if (isset($_SESSION['pseudo'])) {
-                require "..\\App\\Views\\templates\\navBar.php";
+                require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR ."navBar.php";
             }
             $datas;
             require $file;
 
             $content = ob_get_clean();
-            require "..\\App\\Views\\templates\\default.php";
+            require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR ."default.php";
             return $content;
         } else {
             throw new Exception("Fichier '$file' introuvable");

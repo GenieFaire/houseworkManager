@@ -12,7 +12,7 @@
                 <label for="taskName">Nom de la tâche :</label>
                 <input type="text" name="taskName" id="taskName" class="form-control border-0"
                        value="<?= $datas['task']->getTaskName(); ?>">
-            </div>
+            </div> 
             <div class="row justify-content-between">
                 <div class="form-group col-6">
                     <label for="duration">Durée estimée :</label>
@@ -51,7 +51,7 @@
                 </select>
             </div>
                 <div class="form-group col-6">
-                    <label for="date">Date :</label>
+                    <label for="date">Date de fin d'assignation :</label>
                     <input type="date" name="date" id="date" class="form-control border-0"
                            value="<?= $datas['taskToDo']->getDate(); ?>">
                 </div>
@@ -101,16 +101,22 @@
                     <label for="once">Ne pas assigner</label>
                 </div>
             </div>
+            <div class="form-group">
+                <p>Souhaitez-vous que la tâche soit réassignée dès aujourd'hui ?</p>
+                <input type="checkbox" id="today" name="today" value="1">
+                <label for="today">Oui</label>
+            </div>
         </div>
     </div>
-</form>
     <div class="form-group text-center">
-        <button type="submit" class="btn btn-lg pink-button" name="action" value="update">Enregistrer</button>
+        <button type="submit" class="btn btn-lg pink-button" name="action" value="updateTask">Enregistrer</button>
         <button class="btn btn-lg blue-button" data-toggle="modal"
                 data-target=".modalDelete-<?= $datas['task']->getIdTask(); ?>">
             Supprimer
         </button>
     </div>
+</form>
+
 
 
 

@@ -4,6 +4,8 @@
 namespace App\Controller;
 
 use App\Entity\Member;
+use App\Entity\Task;
+use App\Entity\TaskToDo;
 use App\Repository\CategoryRepository;
 use App\Repository\MemberRepository;
 use App\Repository\PlaceRepository;
@@ -11,7 +13,7 @@ use App\Repository\TaskRepository;
 use App\Repository\TasktodoRepository;
 use App\Services\taskServices;
 
-class TasktodoController extends Controller
+class TasktodoController extends TaskBaseController
 {
     public function index($param = "")
     {
@@ -36,19 +38,16 @@ class TasktodoController extends Controller
         $datas['tasksToDo'] = $tasksToDo;
 
         if ($tasksToDo != false) {
-            $categoryRepository = new CategoryRepository();
-            $placeRepository = new PlaceRepository();
+            $datas['places'] = $this->getPlacesList();
+            $datas['categories'] = $this->getCategoriesList();
+
             $taskRepository = new TaskRepository();
 
-            $places = $placeRepository->getAllPlace();
-            $datas['places'] = $places;
-
-            $categories = $categoryRepository->getAllCategory();
-            $datas['categories'] = $categories;
-
+            $tasks = [];
             foreach ($tasksToDo as $tasktodo) {
                 $idTask = $tasktodo->getIdTask();
-                $tasks[] = $taskRepository->getOneTask($idTask);
+                $task = $taskRepository->getOneTask($idTask);
+                if ($task !== false) $tasks[] = $task;
                 $datas['tasks'] = $tasks;
                 $dates[] = $tasktodo->getDate();
             }
@@ -56,63 +55,50 @@ class TasktodoController extends Controller
             $datas['uniqueDates'] = $result;
         } else {
             $datas = null;
-            }
+        }
         $this->render("dashboard", $datas);
-        }
-
-        public function assignmentPage() {
-
-        $this->checkSession();
-        $taskToDoRepository = new TasktodoRepository();
-        $result = $taskToDoRepository->getNonAssignedTasksToDo($_SESSION['idFamily']);
-            $datas['tasksToDo'] = $result;
-        $tasks = new TaskRepository();
-        foreach ($result as $taskToAssign) {
-            $res[] = $tasks->getOneTask($taskToAssign->getIdTask());
-            $datas['tasks'] = $res;
-        }
-
-        $places = new PlaceRepository();
-        $datas['places'] = $places->getAllPlace();
-//        var_dump($datas);
-            $this->render("assignment", $datas);
-
-//        $members = new MemberRepository();
-//        $members->getAllMember($_SESSION['idFamily']);
-            // récupère les membres
-            //affiche assignment.php
-        }
-
-        public function assignmentTaskToDo(array $param) {
-        $this->checkSession();
-            $members = new MemberRepository();
-        $members->getAllMember($_SESSION['idFamily']);
-
-            $tasks = new TaskRepository();
-            $task = $tasks->getOneTask($param['idTask']);
-
-        $taskServices = new taskServices();
-        $toAssign = $taskServices->taskAssignement($task, $members);
-
-            //vérifier que c'est équitable
-
-//            rentrer la tâche à faire en bdd en fonction de la récurrence (tous les jours, les semaines, ...) et en fonction de la durée d'assignation
-            $periodicity = $task->getPeriodicity();
-            $assignmentDuring = $param['assignmentDuring'];
-            if($assignmentDuring === 1) {
-                //ajout dans la bdd une fois pour cette personne sans changer la date
-                // si periodicity > 1
-                // ajout une fois de plus sans assignement
-            } elseif ($assignmentDuring >= 7) {
-                // ajouter dans la base de données autant de fois que la période
-                $i = 0;
-                while ($i<=$assignmentDuring) {
-                    $taskRepository->addAssignedTask($idTask, $i, $date);
-                    $i += $periodicity;
-                }
-                 $taskRepository->addTaskNonAssigned(idTask, date, idFamily, $i+periodicity);
-            }
-            // calculer les dates dans la bdd
-            // renvoyer la tâche à bien été ajoutée à membre jusqu'au date
-        }
     }
+
+    public function updateTask(array $param)
+    {
+        $taskRepository = new TaskRepository();
+        $taskRepository->updateTask($param);
+    }
+
+    public function assignmentTaskToDo(array $param)
+    {
+        $this->checkSession();
+        $memberRepository = new MemberRepository();
+        $members = $memberRepository->getAllMember($_SESSION['idFamily']);
+
+        $taskRepository = new TaskRepository();
+
+        // Mise à jour de la Task (période, durée, age, nom, ....
+        $taskRepository->updateTask($param);
+
+
+        $task = $taskRepository->getOneTask($param['idTask']);
+
+
+        $taskToDoRepository = new TasktodoRepository();
+
+        if ($param['idMember'] != "") {
+            $idAssignedMember = $param['idMember'];
+        } else {
+            $taskServices = new taskServices();
+            $idAssignedMember = $taskServices->taskAssignment($task->getMinimumAge(), $members);
+        }
+
+        $periodicity = $task->getPeriodicity(); // récurrence
+        $assignmentDuring = $param['assignmentDuring']; // durée d'assignation
+
+        //vérifier que c'est équitable
+        for ($i = 0; $i < $assignmentDuring; $i += $periodicity) {
+            $date = date('Y-m-d', strtotime($param['date'] . '+' . $i . 'days'));
+//            var_dump($date);
+            $taskToDoRepository->assignTaskToDo($task->getIdTask(), $idAssignedMember, $date);
+
+        }
+        header("Location:index.php?p=task");
+    }
+}

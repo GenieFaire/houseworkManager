@@ -9,7 +9,6 @@ class TaskToDo
 
     private int $_idTask;
     private int $_idMember;
-    private int $_idFamily;
     private string $_date;
     private bool $_done;
     private string $_assignmentValue;
@@ -17,17 +16,15 @@ class TaskToDo
 
     /**
      * TaskToDo constructor.
-     * @param int $idFamily
      * @param int $idMember
      * @param int $idTask
      * @param string $date
      * @param bool $done
      */
-    public function __construct(int $idTask, int $idMember, int $idFamily, string $date, bool $done)
+    public function __construct(int $idTask, int $idMember, string $date, bool $done)
     {
         $this->setIdTask($idTask);
         $this->setIdMember($idMember);
-        $this->setIdFamily($idFamily);
         $this->setDate($date);
         $this->setDone($done);
         $this->setDoneValue($done);
@@ -83,22 +80,6 @@ class TaskToDo
     public function setDone(bool $done): void
     {
         $this->_done = $done;
-    }
-
-    /**
-     * @return int
-     */
-    public function getIdFamily(): int
-    {
-        return $this->_idFamily;
-    }
-
-    /**
-     * @param int $idFamily
-     */
-    public function setIdFamily(int $idFamily): void
-    {
-        $this->_idFamily = $idFamily;
     }
 
     /**

@@ -9,7 +9,7 @@
 }
 
 .password-form {
-justify-content: center;
+    justify-content: center;
     margin: 150px;
 }
 
@@ -47,10 +47,14 @@ h3 {
     font-weight: bold;
 }
 
-h4, .date  {
+h4, .date {
     font-family: "Josefin Bold";
     font-size: 30px;
     margin-left: 60px;
+}
+
+#pseudoCheck, #pseudoCheck2 {
+    color: red;
 }
 
 #message {
@@ -124,6 +128,7 @@ button, .blue-button {
 .title {
     height: 30%;
 }
+
 #s {
     height: 150px;
 }

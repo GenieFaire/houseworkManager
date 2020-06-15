@@ -42,22 +42,29 @@ class Router
 
     private function createController()
     {
-        $controller = "home";
+        $controllerName = "home";
 
         if (isset($this->request['p']) && $this->request['p'] != "") {
-            $controller = $this->request['p'];
+            $controllerName = $this->request['p'];
         }
-        $controller = ucfirst(strtolower($controller));
-        $controllerClass = "App\Controller\\" . $controller . "Controller";
-        $controllerFile = "..\\" . $controllerClass . ".php";
-        if (file_exists($controllerFile)) {
-            $controller = new $controllerClass();
-            $controller->setRequest($this->request);
-            return $controller;
-        } else {
-//            throw new Exception("Fichier '$controllerFile' introuvable");
+        $controllerName = ucfirst(strtolower($controllerName));
 
-        }
+        $controllerClass = "App\Controller\\" . $controllerName . "Controller";
+//        echo "controllerClass = " . $controllerClass . "<br />";
+
+        $controller = new $controllerClass();
+        $controller->setRequest($this->request);
+        return $controller;
+
+//        $controllerFile = "..\\" . $controllerClass . ".php";
+//        if (file_exists($controllerFile)) {
+//            $controller = new $controllerClass();
+//            $controller->setRequest($this->request);
+//            return $controller;
+//        } else {
+////            throw new Exception("Fichier '$controllerFile' introuvable");
+//
+//        }
     }
 
     // gestion et affichage des erreurs

@@ -10,8 +10,9 @@
                value="<?= $datas->getIdMember(); ?>">
 
     <label class="col-form-label-lg">Pseudo</label>
-    <input type="text" name="pseudo" class="form-control form-control-lg"
-           value="<?= $datas->getPseudo(); ?>">
+    <input type="text" name="pseudo" id="pseudo" class="form-control form-control-lg"
+           value="<?= $datas->getPseudo(); ?>" onblur="uniquePseudo()">
+        <p id="pseudoCheck"></p>
     </div>
     <div class="form-group">
         <label for="password" class="col-form-label">Mot de passe : </label>

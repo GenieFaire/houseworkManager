@@ -10,7 +10,6 @@ class TaskRepository extends Database
 
     public function getAllTask(int $idFamily)
     {
-        var_dump($idFamily);
         $tasks = [];
         $query = "SELECT * FROM task WHERE idFamily = :idFamily";
         $request = $this->connection->prepare($query);
@@ -23,16 +22,32 @@ class TaskRepository extends Database
         return $tasks;
     }
 
-    public function getOneTask($id)
+    /**
+     * Return task of false if not exists
+     * @param int $id
+     * @return Task|bool
+     */
+    public function getOneTask(int $id)
     {
         $request = $this->connection->prepare("
                 SELECT * FROM task
                     WHERE idTask = :idTask  ");
         $request->bindValue(':idTask', $id, PDO::PARAM_INT);
         $request->execute();
-        $datas = $request->fetch(PDO::FETCH_OBJ);
-            $task = new Task($datas->idTask, $datas->taskName, $datas->duration, $datas->minimumAge, $datas->periodicity, $datas->idCategory, $datas->idPlace, $datas->idFamily);
-        return $task;
+        $row = $request->fetch(PDO::FETCH_OBJ);
+        if ($row !== false) {
+            return new Task(
+                $row->idTask,
+                $row->taskName,
+                $row->duration,
+                $row->minimumAge,
+                $row->periodicity,
+                $row->idCategory,
+                $row->idPlace,
+                $row->idFamily
+            );
+        }
+        return false;
     }
 
     /**
@@ -63,9 +78,9 @@ class TaskRepository extends Database
 
     public function updateTask($param) {
         $query = "UPDATE task SET taskName = ?, duration = ?, minimumAge = ?, periodicity = ?, idPlace = ?, idCategory = ? WHERE idTask = ?";
-        $res = $this->connection->prepare($query);
-        $task = $res->execute(array($param['taskName'], $param['duration'], $param['minimumAge'], $param['periodicity'], $param['idPlace'], $param['category'], $param['idTask']));
-        return $task;
+        $request = $this->connection->prepare($query);
+        $datas = $request->execute(array($param['taskName'], $param['duration'], $param['minimumAge'], $param['periodicity'], $param['idPlace'], $param['category'], $param['idTask']));
+        return $datas;
     }
 
     public function deleteTask($param) {

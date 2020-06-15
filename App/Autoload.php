@@ -8,8 +8,19 @@ class Autoload {
     }
 
     static function autoload($class) {
-        if (strpos($class, __NAMESPACE__ . '\\') === 0) {
-            require  "..\\" . DIRECTORY_SEPARATOR. $class .'.php';
+
+//        echo "DIRECTORY_SEPARATOR = " . DIRECTORY_SEPARATOR . "<br/>";
+        $root = $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR;
+//        echo "root = " . $root . "<br/>";
+        $file = $root . str_replace('\\', DIRECTORY_SEPARATOR, $class).'.php';
+//        echo "file = " . $file . "<br/>";
+
+        if (file_exists($file)) {
+//            echo "exist" . "<br/>";
+            require $file;
+            return true;
         }
+//        echo "n'existe pas" . "<br/>";
+        return false;
     }
 }

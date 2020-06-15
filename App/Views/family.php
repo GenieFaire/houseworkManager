@@ -4,7 +4,7 @@
 <button id="add" class="btn pink-button btn-lg" data-toggle="modal" data-target="#modalAdd">Ajouter un membre
 </button>
 
-    <p id="pseudoCheck"></p>
+
 
 <p></p>
 <table id="table" class="table table-hover">
@@ -25,7 +25,8 @@
             <th class="hide"><input type="text" name="idMember" class="form-control border-0"
                        value="<?= $member->getIdMember(); ?>" READONLY></th>
             <td><input type="text" name="pseudo" class="form-control border-0" id="pseudoValue-<?= $member->getIdMember(); ?>"
-                       value="<?= $member->getPseudo(); ?>"  onblur="uniquePseudo(this)"/>
+                       value="<?= $member->getPseudo(); ?>"  onblur="uniquePseudo2(this)"/>
+                <p id="pseudoCheck"></p>
             </td>
 
             <td><input type="date"  name="birthday" class="form-control border-0"
@@ -97,7 +98,7 @@
                         <input type="text" name="idFamily" value="<?= $_SESSION['idFamily']; ?>" HIDDEN/>
                         <div class="form-group col-6">
                             <label for="pseudo" class="col-form-label">Pseudo du membre : </label>
-                            <input name="pseudo" class="form-control" type="text" id="newMember" maxlength="50" onblur="uniquePseudo(this)"/>
+                            <input name="pseudo" class="form-control" type="text" id="newMember" maxlength="50" onblur="uniquePseudo2(this)"/>
                             <p id="pseudoCheck2"></p>
                             <label for="birthday" class="col-form-label">Date de naissance : </label>
                             <input name="birthday" class="form-control" type="date"/>
@@ -122,58 +123,7 @@
             </div>
         </div>
     </div>
-<!--    <script>-->
-<!--        function passwordVerification()-->
-<!--        {-->
-<!--            if(document.getElementById("password").value != document.getElementById("passwordverif").value) {-->
-<!--                document.getElementById("err").innerHTML = "<p style='color:#ff0000'>Les deux mots de passe ne sont pas identiques</p>";-->
-<!--            }-->
-<!--            else {-->
-<!--                document.getElementById("err").innerHTML = "<p style='color:green'>mot de passe valide</p>";-->
-<!--            }-->
-<!--        }-->
-<!--    </script>-->
 </div>
 
-<script type='text/javascript'>
-
-
-
-    let param = <?php print  $idMember = $member->getIdMember(); ?>;
-
-    function uniquePseudo(e) {
-        let idPseudo = e.getAttribute('id');
-        // console.log(idElement);
-
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // console.log(xhr.responseText);
-                let response = xhr.responseText;
-                console.log(response);
-                if (idPseudo === "newMember") {
-                    if (response !== '0') {
-                        document.getElementById('pseudoCheck2').innerHTML = "Ce pseudo est déjà utilisé, veuillez en choisir un autre.";
-                    } else {
-                        document.getElementById('pseudoCheck2').innerHTML = "excellent choix !";
-                    }
-                }
-
-                if (response !== '0') {
-                    document.getElementById('pseudoCheck').innerHTML = "Ce pseudo est déjà utilisé, veuillez en choisir un autre.";
-                } else {
-                    document.getElementById('pseudoCheck').innerHTML = "excellent choix !";
-                }
-            }
-        }
-
-        xhr.open("POST", "index.php", true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        let pseudo = document.getElementById(idPseudo).value;
-        // console.log(pseudo);
-        xhr.send("p=member&action=checkPseudo&pseudo=" + pseudo);
-    }
-</script>
 
 

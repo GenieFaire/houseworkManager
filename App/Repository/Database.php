@@ -14,12 +14,23 @@ class Database
     public function __construct()
     {
         try {
-            $this->connection = new PDO(
-                'mysql:host=localhost;dbname=housework_manager',
-                'root',
-                'root',
-                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
-            );
+            if ($_SERVER['SERVER_NAME'] === 'localhost') {
+                $this->connection = new PDO(
+                    'mysql:host=localhost;dbname=housework_manager',
+                    'housework',
+                    'R7DUsmE_SmEGVY9',
+                    array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+                );
+            } else {
+                $this->connection = new PDO(
+                    'mysql:host=mysql-housework.alwaysdata.net;dbname=housework_manager',
+                    'housework',
+                    'R7DUsmE_SmEGVY9',
+                    array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+                );
+            }
+
+//            var_dump($this->connection);
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo $e->getMessage();
