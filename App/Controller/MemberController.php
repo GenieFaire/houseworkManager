@@ -44,11 +44,9 @@ class MemberController extends Controller
 
     public function index($param)
     {
-
-        // TODO voir l'utilité du cleaninput
         $param = $this->cleanInput($param);
         $this->checkSession();
-        $this->generateView($param);
+        $this->generateView($_SESSION['idMember']);
     }
 
     public function connexion(array $param)
@@ -115,7 +113,7 @@ class MemberController extends Controller
             if ($response === true) {
                 $memberRepository->activationAccount($param);
                 $this->setSession($member->getPseudo(), $member->getIdFamily(), $member->getGrade(), $member->getIdMember());
-                $this->generateView($param);
+                $this->generateView($member->getIdMember());
             }
         } else {
             header("Location: index.php?p=home&param=6");
@@ -127,7 +125,6 @@ class MemberController extends Controller
         $this->render("passwordPage", $param);
     }
 
-    // TODO vérifier qu'on ne rentre pas deux pseudos identiques sinon on plante tout
     public function add(array $param)
     {
         $memberRepository = new MemberRepository();
@@ -184,8 +181,7 @@ class MemberController extends Controller
         $this->setSession($member->getPseudo(), $member->getIdFamily(), $member->getGrade(), $member->getIdMember());
         $memberRepository = new MemberRepository();
         $memberRepository->update($member);
-        $this->generateView($param);
-//        header("Location: index.php?p=tasktodo");
+        $this->generateView($member->getIdMember());
     }
 
     public function recoveryPassword(array $param)

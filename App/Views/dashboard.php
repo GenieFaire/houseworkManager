@@ -16,9 +16,9 @@
 
                 <h4 class="date"><?= strftime('%A %d %B %Y', strtotime($date)); ?></h4>
                 <?php foreach ($datas['tasksToDo'] as $taskToDo) :
-                    if (date('d-m-Y', strtotime($date)) == date('d-m-Y', strtotime($taskToDo->getDate()))) {
-                        foreach ($datas['tasks'] as $task) :
-                            if ($task->getIdTask() == $taskToDo->getIdTask()) { ?>
+                    foreach ($datas['tasks'] as $task) :
+                    if (date('d-m-Y', strtotime($date)) == date('d-m-Y', strtotime($taskToDo->getDate())) && $task->getIdTask() == $taskToDo->getIdTask()) {
+                        ?>
 
                                 <div class="row task">
                                     <div class="task-header"><h3><?= $task->getTaskName() ?></h3></div>
@@ -44,7 +44,7 @@
                             <?php }
 
                         endforeach;
-                    }
+
                 endforeach;
             } }?>
         </div>
