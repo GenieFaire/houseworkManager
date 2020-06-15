@@ -8,7 +8,7 @@ class MailService {
     {
         $mailDatas = [];
         $mailDatas['sujet'] = "Activer votre compte";
-        $mailDatas['entete'] = "From: jennifer.cavaccuiti@yahoo.fr";
+        $mailDatas['entete'] = "From: housework@alwaysdata.net";
 
 
         $mailDatas['message'] = 'Bienvenue sur le Housework-manager,
@@ -28,7 +28,7 @@ Ceci est un mail automatique, Merci de ne pas y répondre.';
     public function passwordNewAccount(string $pseudo, int $code, int $idMember) {
         $mailDatas = [];
         $mailDatas['sujet'] = "Votre compte sur Housework Manager";
-        $mailDatas['entete'] = "From: jennifer.cavaccuiti@yahoo.fr";
+        $mailDatas['entete'] = "From: housework@alwaysdata.net";
 
 
         $mailDatas['message'] = 'Bonjour' . urlencode($pseudo) . ',
@@ -48,7 +48,7 @@ Ceci est un mail automatique, Merci de ne pas y répondre.';
     public function forgetPassword(string $pseudo, int $code, int $idMember) {
         $mailDatas = [];
         $mailDatas['sujet'] = "Réinitialiser votre mot de passe";
-        $mailDatas['entete'] = "From: jennifer.cavaccuiti@yahoo.fr";
+        $mailDatas['entete'] = "From: housework@alwaysdata.net";
 
 
         $mailDatas['message'] = 'Bonjour' . urlencode($pseudo) . ',

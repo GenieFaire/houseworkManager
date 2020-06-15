@@ -3,9 +3,10 @@ function uniquePseudo() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             let response = xhr.responseText;
-            console.log(response);
             if (response !== '0') {
                 document.getElementById('pseudoCheck').innerHTML = "Ce pseudo est déjà utilisé, veuillez en choisir un autre.";
+            } else {
+                document.getElementById('pseudoCheck').innerHTML = " ";
             }
         }
     }
@@ -27,10 +28,14 @@ function uniquePseudo2(e) {
             if (idPseudo === "newMember") {
                 if (response !== '0') {
                     document.getElementById('pseudoCheck2').innerHTML = "Ce pseudo est déjà utilisé, veuillez en choisir un autre.";
+                } else {
+                    document.getElementById('pseudoCheck2').innerHTML = " ";
                 }
             } else {
                 if (response !== '0') {
                     document.getElementById('pseudoCheck').innerHTML = "Ce pseudo est déjà utilisé, veuillez en choisir un autre.";
+                } else {
+                    document.getElementById('pseudoCheck').innerHTML = " ";
                 }
             }
         }
