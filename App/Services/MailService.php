@@ -75,7 +75,6 @@ Ceci est un mail automatique, Merci de ne pas y répondre.';
         }
 
     }
-
 }
 
 

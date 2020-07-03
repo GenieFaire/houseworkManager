@@ -12,12 +12,11 @@ use App\Services\MailService;
 
 class MemberController extends Controller
 {
-    public function getList($idFamily)
-    {
-        $memberRepository = new MemberRepository();
-        return $memberRepository->getAllMember($idFamily);
-    }
 
+    /**
+     * @param string $pseudo
+     * @return Member|bool
+     */
     public function getMemberByPseudo(string $pseudo)
     {
         $memberRepository = new MemberRepository();
@@ -30,6 +29,10 @@ class MemberController extends Controller
         }
     }
 
+    /**
+     * @param int $idMember
+     * @return Member|bool
+     */
     public function getMemberById(int $idMember)
     {
         $memberRepository = new MemberRepository();
@@ -42,14 +45,17 @@ class MemberController extends Controller
         }
     }
 
-    public function index($param)
+    /**
+     * @param array $param
+     */
+    public function index($param) :void
     {
         $param = $this->cleanInput($param);
         $this->checkSession();
         $this->generateView($_SESSION['idMember']);
     }
 
-    public function connexion(array $param)
+    public function connexion(array $param) :void
     {
         $member = $this->getMemberByPseudo($param['pseudo']);
 
@@ -70,7 +76,7 @@ class MemberController extends Controller
         }
     }
 
-    public function update(array $param)
+    public function update(array $param) :void
     {
         $this->checkSession();
 
@@ -95,15 +101,14 @@ class MemberController extends Controller
         $memberRepository->update($member);
 
         if (isset($param['idFamily'])) {
-            $members = $this->getList($param['idFamily']);
+            $members = $this->getAllMembers($param['idFamily']);
             $this->render("family", $members);
         } else {
             $this->render("member", $member);
         }
     }
 
-    // change le mot de passe en bdd
-    public function password(array $param)
+    public function password(array $param) :void
     {
         $member = $this->getMemberById($param['idMember']);
         if ($member != false && $member->getCode() == $param['code']) {
@@ -120,12 +125,12 @@ class MemberController extends Controller
         }
     }
 
-    public function passwordPage(array $param)
+    public function passwordPage(array $param) :void
     {
         $this->render("passwordPage", $param);
     }
 
-    public function add(array $param)
+    public function add(array $param) :void
     {
         $memberRepository = new MemberRepository();
         $this->checkSession();
@@ -138,7 +143,7 @@ class MemberController extends Controller
         header("Location: index.php?p=family");
     }
 
-    public function delete(array $param)
+    public function delete(array $param) :void
     {
         $memberRepository = new MemberRepository();
         $this->checkSession();
@@ -146,19 +151,24 @@ class MemberController extends Controller
         header("Location: index.php?p=family");
     }
 
-    public function disconnect()
+    public function disconnect() :void
     {
         $this->unsetSession();
         header("Location: index.php?p=home");
     }
 
-    public function account(array $param)
+    public function account(array $param) :void
     {
         $this->checkSession();
         $member = $this->getMemberByPseudo($_SESSION['pseudo']);
         $this->render("member", $member);
     }
 
+    /**
+     * @param Member $member
+     * @param array $param
+     * @return bool
+     */
     public function checkPassword(Member $member, array $param): bool
     {
         if (!password_verify($param['password'], $member->getPassword())) {
@@ -172,7 +182,7 @@ class MemberController extends Controller
         }
     }
 
-    public function activation(array $param)
+    public function activation(array $param) :void
     {
         $member = $this->getMemberById($param['idMember']);
         $member->setCode(0);
@@ -184,7 +194,8 @@ class MemberController extends Controller
         $this->generateView($member->getIdMember());
     }
 
-    public function recoveryPassword(array $param)
+
+    public function recoveryPassword(array $param) :void
     {
         $memberRepository = new MemberRepository();
         $member = $this->getMemberByPseudo($param['pseudo']);
@@ -206,14 +217,14 @@ class MemberController extends Controller
         }
     }
 
-    public function checkPseudo(array $param)
+    public function checkPseudo(array $param) :void
     {
         $memberRepository = new MemberRepository();
         $response = $memberRepository->uniquePseudo($param['pseudo']);
         echo $response['number'];
     }
 
-    public function generateView(int $idMember)
+    public function generateView(int $idMember) :void
     {
         $taskToDoRepository = new tasktodoRepository();
         $tasksToDo = $taskToDoRepository->getMemberTasksToDo($idMember);

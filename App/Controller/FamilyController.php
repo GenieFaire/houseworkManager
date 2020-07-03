@@ -18,6 +18,9 @@ class FamilyController extends Controller
         $this->generateView();
     }
 
+    /**
+     * @param array $param
+     */
     public function addFamily(array $param): void
     {
         $familyRepository = new FamilyRepository();
@@ -34,21 +37,31 @@ class FamilyController extends Controller
         header("Location: index.php?p=home&param=2");
     }
 
-    public function update(array $param)
+    /**
+     * @param array $param
+     */
+    public function update(array $param) :void
     {
         $familyRepository = new FamilyRepository();
         $familyRepository->updateFamily($param);
         $this->generateView();
     }
 
-    public function delete(array $param)
+    /**
+     * @param array $param
+     */
+    public function delete(array $param) :void
     {
         $familyRepository = new FamilyRepository();
         $familyRepository->deleteFamily($param);
         $this->generateView();
     }
 
-    public function generateView($action = "")
+    /**
+     * @param string $action
+     * @throws \Exception
+     */
+    public function generateView(string $action = "") :void
     {
         if ($action === 'add') {
             $memberRepository = new MemberRepository();
@@ -56,16 +69,9 @@ class FamilyController extends Controller
             $this->render("dashboard", $member);
         } else {
             $this->checkSession();
-            $memberRepository = new MemberRepository();
-            $members = $memberRepository->getAllMember($_SESSION['idFamily']);
+            $members = $this->getAllMembers($_SESSION['idFamily']);
             $this->render("family", $members);
         }
     }
 
-    public function getList($familyMembers)
-    {
-        $memberRepository = new MemberRepository();
-        $members = $memberRepository->getAllMember($familyMembers);
-        return $members;
-    }
 }

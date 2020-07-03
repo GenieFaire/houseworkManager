@@ -11,33 +11,30 @@ use App\Services\taskServices;
 
 class TaskController extends Controller
 {
-    public function index(array $param)
+    public function index(array $param) :void
     {
         $this->checkSession();
         $this->generateView($param);
     }
 
-    public function getList()
+    public function getList() :array
     {
         $taskRepository = new TaskRepository();
         return $taskRepository->getAllTask($_SESSION['idFamily']);
     }
 
-//    TODO copiée dans taskToDo (peut être envisagé de fusionner les deux controlleurs
-    public function update(array $param)
+    public function update(array $param) :Task
     {
         $this->checkSession();
         $taskRepository = new TaskRepository();
-        // TODO doit retourner la tâche Task
 
         $datas = $taskRepository->updateTask($param);
         $task = new Task($datas->idTask, $datas->taskName, $datas->duration, $datas->minimumAge, $datas->periodicity, $datas->idCategory, $datas->idPlace, $datas->idFamily);
         return $task;
     }
 
-    public function updateTask(array $param)
+    public function updateTask(array $param) :void
     {
-        var_dump($param);
         $this->checkSession();
         $taskRepository = new TaskRepository();
         $taskToDoRepository = new tasktodoRepository();
@@ -50,12 +47,14 @@ class TaskController extends Controller
         // assignation de la tâche ok
         $idMember = $this->assignmentTask($param, $task);
 
-//        if ($param['date'] == '') {
-//            $param['date'] = date('Y-m-d');
-//        }
-
         if (isset($param['today']) && $param['today'] == 1) {
             $param['date'] = date('Y-m-d');
+
+            $tasksToUpdate = $taskToDoRepository->getTasksToDoNotDone($param['idTask'], $param['date']);
+            if($tasksToUpdate !=false)
+            foreach ($tasksToUpdate as $taskToUpdate) {
+                $taskToUpdate->setIdMember($idMember);
+            }
         }
 
         //mise en base de la TaskToDo
@@ -63,7 +62,7 @@ class TaskController extends Controller
         $this->generateView();
     }
 
-    public function addTask(array $param)
+    public function addTask(array $param) :void
     {
         $this->checkSession();
         $taskRepository = new TaskRepository();
@@ -83,12 +82,11 @@ class TaskController extends Controller
             $param['date'] = date('Y-m-d');
         }
 
-        //mise en base de la TaskToDo
         $this->addTaskToDoToDatabase($param, $taskToDoRepository, $idMember, $task);
         $this->generateView();
     }
 
-    public function delete(array $param)
+    public function delete(array $param) :void
     {
         $this->checkSession();
         $taskRepository = new TaskRepository();
@@ -96,16 +94,18 @@ class TaskController extends Controller
         $this->generateView();
     }
 
-    public function generateView(array $param = null)
+    /**
+     * @param array|null $param
+     * @throws \Exception
+     */
+    public function generateView(array $param = null) :void
     {
-
-        $memberRepository = new MemberRepository();
         $taskToDoRepository = new tasktodoRepository();
 
         $datas['places'] = $this->getPlacesList();
         $datas['categories'] = $this->getCategoriesList();
 
-        $members = $memberRepository->getAllMember($_SESSION['idFamily']);
+        $members = $this->getAllMembers($_SESSION['idFamily']);
         $datas['members'] = $members;
 
         if (isset($param['idTask']) && $param['idTask'] != "") {
@@ -138,11 +138,12 @@ class TaskController extends Controller
      */
     private function assignmentTask(array $param, Task $task): int
     {
-        if (!isset($param['idMember']) && $param['idMember'] != "") {
+        var_dump($param['idMember']);
+        if ($param['idMember'] != 0) {
             $idAssignedMember = $param['idMember'];
         } else {
-            $memberRepository = new MemberRepository();
-            $members = $memberRepository->getAllMember($_SESSION['idFamily']);
+            $members = $this->getAllMembers($_SESSION['idFamily']);
+            var_dump($members);
             $taskServices = new taskServices();
             $idAssignedMember = $taskServices->taskAssignment($task->getMinimumAge(), $members);
         }
@@ -166,7 +167,7 @@ class TaskController extends Controller
         }
     }
 
-    public function done(array $param)
+    public function done(array $param) :void
     {
         $this->checkSession();
         $taskToDoRepository = new tasktodoRepository();

@@ -67,7 +67,7 @@
                                 if ($taskToDo->getIdMember() === 0) {
                                     echo "<option value='0' selected>A Assigner</option>";
                                 } elseif ($member->getIdMember() === $taskToDo->getIdMember()) {
-                                    echo "<option value=" . $member->getIdMember() . "selected>" . $member->getPseudo() . "</option>";
+                                    echo " value=" . $member->getIdMember() . "selected>" . $member->getPseudo() . "</option>";
                                 }
                             }
                         endforeach;

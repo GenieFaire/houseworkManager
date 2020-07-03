@@ -10,12 +10,6 @@ use App\Entity\TaskToDo;
 
 class taskServices
 {
-
-    public function setCurrentDate()
-    {
-        return date("Y-m-d");
-    }
-
     public function taskAssignment(int $minimumAge, array $members): int
     {
         shuffle($members);
@@ -38,7 +32,5 @@ class taskServices
 
         return $date[0] - $memberBirthday[0] - 1;
     }
-
-
 }
 

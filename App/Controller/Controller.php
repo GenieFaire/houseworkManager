@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use App\Repository\CategoryRepository;
+use App\Repository\MemberRepository;
 use App\Repository\PlaceRepository;
 use Exception;
 
@@ -24,13 +25,13 @@ abstract class Controller
             ob_start();
 
             if (isset($_SESSION['pseudo'])) {
-                require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR ."navBar.php";
+                require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . "navBar.php";
             }
             $datas;
             require $file;
 
             $content = ob_get_clean();
-            require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR ."default.php";
+            require $root . DIRECTORY_SEPARATOR . "App" . DIRECTORY_SEPARATOR . "Views" . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR . "default.php";
             return $content;
         } else {
             throw new Exception("Fichier '$file' introuvable");
@@ -43,13 +44,22 @@ abstract class Controller
         $this->request = $request;
     }
 
-    // Action à réaliser.
-    public function getAll()
+    /**
+     * @param int $idFamily
+     * @return array
+     */
+    public function getAllMembers(int $idFamily): array
     {
-        //..
+        $memberRepository = new MemberRepository();
+        return $memberRepository->getAllMember($idFamily);
     }
 
     // nettoyage des input utilisateurs
+
+    /**
+     * @param $datas
+     * @return array
+     */
     public function cleanInput($datas): array
     {
         foreach ($datas as $key => $value) {
@@ -58,12 +68,21 @@ abstract class Controller
         return $datas;
     }
 
+    /**
+     * @return int
+     */
     protected function getRandNumber(): int
     {
         return rand(1000000, 10000000);
     }
 
-    protected function setSession(string $pseudo, int $idFamily, bool $grade, int $idMember)
+    /**
+     * @param string $pseudo
+     * @param int $idFamily
+     * @param bool $grade
+     * @param int $idMember
+     */
+    protected function setSession(string $pseudo, int $idFamily, bool $grade, int $idMember): void
     {
         session_start();
 
@@ -73,33 +92,45 @@ abstract class Controller
         $_SESSION['idMember'] = $idMember;
     }
 
+    /**
+     *
+     */
     protected function unsetSession(): void
     {
         session_start();
         $_SESSION["id"] = "-1";
         session_unset();
         session_destroy();
-//        setcookie("mdp","--", time()-1);
         header("Location: index.php");
     }
 
+    /**
+     *
+     */
     protected function checkSession(): void
     {
         session_start();
 
-        // si pas connecté, redirection page d'accueil
         if (!isset($_SESSION['pseudo']) or !isset($_SESSION['idFamily'])) {
             header("Location: index.php?p=home");
         }
     }
 
-    protected function getPlacesList() {
+    /**
+     * @return array
+     */
+    protected function getPlacesList() :array
+    {
         $placeRepository = new PlaceRepository();
         $places = $placeRepository->getAllPlace();
         return $places;
     }
 
-    protected function getCategoriesList() {
+    /**
+     * @return array
+     */
+    protected function getCategoriesList() :array
+    {
         $categoryRepository = new CategoryRepository();
         $categories = $categoryRepository->getAllCategory();
         return $categories;

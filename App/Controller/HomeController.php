@@ -9,7 +9,11 @@ use App\Repository\FamilyRepository;
 class HomeController extends Controller
 {
 
-    public function index($param ="")
+    /**
+     * @param string $param
+     * @throws \Exception
+     */
+    public function index($param ="") :void
     {
         $this->render("home");
     }

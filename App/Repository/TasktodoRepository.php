@@ -9,12 +9,18 @@ use PDO;
 class TasktodoRepository extends Database
 {
 
-    public function getTasksToDoNotDone(int $idTask)
+    public function getTasksToDoNotDone(int $idTask, string $date)
     {
-        $query = "SELECT * FROM tasktodo WHERE idTask = :idTask AND done = 0";
+        $query = "SELECT * FROM tasktodo WHERE idTask = :idTask AND done = 0 AND date >= :date";
         $request = $this->connection->prepare($query);
         $request->bindValue(':idTask', $idTask, PDO::PARAM_INT);
+        $request->bindValue(':date', $date, PDO::PARAM_STR);
         $request->execute();
+        while ($datas = $request->fetch(PDO::FETCH_OBJ)) {
+            $taskToDo = new TaskToDo($datas->idTask, $datas->idMember, $datas->date, $datas->done);
+            $tasksToDo[] = $taskToDo;
+        }
+        return $tasksToDo;
     }
 
     public function getMemberTasksToDo(int $idMember)
